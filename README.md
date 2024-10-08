@@ -17,6 +17,7 @@ A breathing exercise with regular polyhedra and their spherical geometries.
 - Get a mesh for
     - [ ] tetrahedron
     - [ ] octahedron
+    - [ ] cube
     - [ ] dodecahedron
     - [ ] icosahedron
     - [ ] more?
