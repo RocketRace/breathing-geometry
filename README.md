@@ -21,8 +21,8 @@ A breathing exercise with regular polyhedra and their spherical geometries.
     - [ ] dodecahedron
     - [ ] icosahedron
     - [ ] more?
-- [ ] basic ts config setup
-- [ ] basic github pages setup
+- [x] basic ts config setup
+- [x] basic github pages setup
 - [ ] basic 3d webgl skeleton
 - [ ] function to triangulate a mesh to the center of faces
 - [ ] function to subdivide triangular faces to a precision N (powers of 2?)

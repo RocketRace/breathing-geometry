@@ -1,0 +1,14 @@
+{
+  "name": "breathing-geometry",
+  "version": "1.0.0",
+  "description": "A breathing exercise with regular polyhedra and their spherical geometries.",
+  "main": "docs/index.html",
+  "scripts": {
+    "watch": "npx tsc --watch"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}
