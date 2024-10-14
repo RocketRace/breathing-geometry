@@ -36,15 +36,23 @@ const createProgram = (vsSource: string, fsSource: string) => {
 // Shader code
 const vsSource = `
 attribute vec4 aVertexPosition;
+attribute vec4 aVertexColor;
+
 uniform mat4 uModelViewMatrix;
 uniform mat4 uProjectionMatrix;
+
+varying lowp vec4 vColor;
+
 void main() {
     gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+    vColor = aVertexColor;
 }
 `;
 const fsSource = `
+varying lowp vec4 vColor;
+
 void main() {
-    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+    gl_FragColor = vColor;
 }
 `;
 
@@ -62,6 +70,7 @@ const programInfo = {
     program: program,
     attribLocations: {
         vertexPosition: gl.getAttribLocation(program, "aVertexPosition"),
+        vertexColor: gl.getAttribLocation(program, "aVertexColor"),
     },
     uniformLocations: {
         projectionMatrix: gl.getUniformLocation(program, "uProjectionMatrix"),
@@ -71,4 +80,18 @@ const programInfo = {
 
 const buffers = initBuffers(gl);
 
-drawScene(gl, programInfo, buffers);
+let squareRotation = 0.0;
+let lastFrame = 0;
+
+// Draw the scene repeatedly
+const render = (now_ms: number) => {
+    const now = now_ms * 0.001; // convert to seconds
+    const deltaTime = now - lastFrame;
+    lastFrame = now;
+
+    drawScene(gl, programInfo, buffers, squareRotation);
+    squareRotation += deltaTime;
+
+    requestAnimationFrame(render);
+}
+requestAnimationFrame(render);
