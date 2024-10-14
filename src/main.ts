@@ -58,3 +58,15 @@ gl.clearColor(0.0, 0.0, 0.0, 1.0);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
 const program = createProgram(vsSource, fsSource);
+
+const programInfo = {
+    program: program,
+    attribLocations: {
+      vertexPosition: gl.getAttribLocation(program, "aVertexPosition"),
+    },
+    uniformLocations: {
+      projectionMatrix: gl.getUniformLocation(program, "uProjectionMatrix"),
+      modelViewMatrix: gl.getUniformLocation(program, "uModelViewMatrix"),
+    },
+  };
+  
