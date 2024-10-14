@@ -29,32 +29,12 @@ const createProgram = (vsSource, fsSource) => {
     }
     return program;
 };
-// Shader code
-const vsSource = `
-attribute vec4 aVertexPosition;
-attribute vec4 aVertexColor;
-
-uniform mat4 uModelViewMatrix;
-uniform mat4 uProjectionMatrix;
-
-varying lowp vec4 vColor;
-
-void main() {
-    gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-    vColor = aVertexColor;
-}
-`;
-const fsSource = `
-varying lowp vec4 vColor;
-
-void main() {
-    gl_FragColor = vColor;
-}
-`;
 // Main program
 // Initialize the canvas and context
 const canvas = document.querySelector("#canvas");
 const gl = canvas?.getContext("webgl") ?? panic("Unable to initialize WebGL. Your browser or machine may not support it.");
+const vsSource = document.querySelector("#vs")?.textContent ?? "";
+const fsSource = document.querySelector("#fs")?.textContent ?? "";
 const program = createProgram(vsSource, fsSource);
 const programInfo = {
     program: program,

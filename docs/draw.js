@@ -30,6 +30,7 @@ const drawScene = (gl, programInfo, buffers, squareRotation) => {
     gl.uniformMatrix4fv(programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
     const offset = 0;
     const vertexCount = 4;
+    // triangle strip: every slice of three coordinates is a triangle
     gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
 };
 // how to compute vertexPosition from the buffers given
