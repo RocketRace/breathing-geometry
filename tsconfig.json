@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
+    "target": "es2020",
+    "module": "es2020",
     "outDir": "./docs",
     "rootDir": "./src",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
+    "paths": {
+      "gl-matrix": ["./node_modules/gl-matrix/index.d.ts"]
+    }
   }
 }

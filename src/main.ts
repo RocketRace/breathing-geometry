@@ -1,3 +1,6 @@
+import { initBuffers } from "./buffer.js";
+import { drawScene } from "./draw.js";
+
 // JS utilities
 const panic = (msg: string) => {
     alert(msg);
@@ -6,7 +9,7 @@ const panic = (msg: string) => {
 
 // WebGL utilities
 const compileShader = (shaderSource: string, shaderType: number) => {
-    const shader = gl.createShader(shaderType)!;  
+    const shader = gl.createShader(shaderType)!;
     gl.shaderSource(shader, shaderSource);
     gl.compileShader(shader);
     if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
@@ -53,20 +56,19 @@ const gl = canvas?.getContext("webgl") ?? panic(
     "Unable to initialize WebGL. Your browser or machine may not support it."
 );
 
-// Clear with all black
-gl.clearColor(0.0, 0.0, 0.0, 1.0);
-gl.clear(gl.COLOR_BUFFER_BIT);
-
 const program = createProgram(vsSource, fsSource);
 
 const programInfo = {
     program: program,
     attribLocations: {
-      vertexPosition: gl.getAttribLocation(program, "aVertexPosition"),
+        vertexPosition: gl.getAttribLocation(program, "aVertexPosition"),
     },
     uniformLocations: {
-      projectionMatrix: gl.getUniformLocation(program, "uProjectionMatrix"),
-      modelViewMatrix: gl.getUniformLocation(program, "uModelViewMatrix"),
+        projectionMatrix: gl.getUniformLocation(program, "uProjectionMatrix"),
+        modelViewMatrix: gl.getUniformLocation(program, "uModelViewMatrix"),
     },
-  };
-  
+};
+
+const buffers = initBuffers(gl);
+
+drawScene(gl, programInfo, buffers);

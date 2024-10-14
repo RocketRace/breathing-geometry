@@ -1,5 +1,5 @@
-"use strict";
-var _a;
+import { initBuffers } from "./buffer.js";
+import { drawScene } from "./draw.js";
 // JS utilities
 const panic = (msg) => {
     alert(msg);
@@ -46,10 +46,7 @@ void main() {
 // Main program
 // Initialize the canvas and context
 const canvas = document.querySelector("#canvas");
-const gl = (_a = canvas === null || canvas === void 0 ? void 0 : canvas.getContext("webgl")) !== null && _a !== void 0 ? _a : panic("Unable to initialize WebGL. Your browser or machine may not support it.");
-// Clear with all black
-gl.clearColor(0.0, 0.0, 0.0, 1.0);
-gl.clear(gl.COLOR_BUFFER_BIT);
+const gl = canvas?.getContext("webgl") ?? panic("Unable to initialize WebGL. Your browser or machine may not support it.");
 const program = createProgram(vsSource, fsSource);
 const programInfo = {
     program: program,
@@ -61,3 +58,5 @@ const programInfo = {
         modelViewMatrix: gl.getUniformLocation(program, "uModelViewMatrix"),
     },
 };
+const buffers = initBuffers(gl);
+drawScene(gl, programInfo, buffers);
