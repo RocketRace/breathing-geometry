@@ -9,10 +9,10 @@ const initBuffers = (gl: WebGLRenderingContext) => {
 }
 
 const initPositionBuffer = (gl: WebGLRenderingContext) => {
-    // Create and activate buffer
+    // create and activate buffer
     const positionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    // Add data
+    // positions are 2D (xy), and each slice of 3 positions is a triangle
     const positions = [1.0, 1.0, -1.0, 1.0, 1.0, -1.0, -1.0, -1.0];
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
     return positionBuffer;

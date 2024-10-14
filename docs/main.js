@@ -68,15 +68,16 @@ const programInfo = {
     },
 };
 const buffers = initBuffers(gl);
+const radPerSecond = 0.5;
 let squareRotation = 0.0;
 let lastFrame = 0;
 // Draw the scene repeatedly
-const render = (now_ms) => {
-    const now = now_ms * 0.001; // convert to seconds
+const render = (nowMillis) => {
+    const now = nowMillis * 0.001;
     const deltaTime = now - lastFrame;
     lastFrame = now;
     drawScene(gl, programInfo, buffers, squareRotation);
-    squareRotation += deltaTime;
+    squareRotation += deltaTime * radPerSecond;
     requestAnimationFrame(render);
 };
 requestAnimationFrame(render);
