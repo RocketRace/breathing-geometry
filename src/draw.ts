@@ -1,6 +1,6 @@
 import { mat4 } from "gl-matrix";
 
-const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: any, squareRotation: number) => {
+export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: any, squareRotation: number) => {
     // configure clear options and how depth is calculated
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clearDepth(1.0);
@@ -97,5 +97,3 @@ const setColorAttribute = (gl: WebGLRenderingContext, buffers: any, programInfo:
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
 }
 
-
-export { drawScene };

@@ -15,9 +15,9 @@ A breathing exercise with regular polyhedra and their spherical geometries.
 ## Technical checklist
 
 - Get a mesh for
-    - [ ] tetrahedron
+    - [x] tetrahedron
     - [ ] octahedron
-    - [ ] cube
+    - [x] cube
     - [ ] dodecahedron
     - [ ] icosahedron
     - [ ] more?

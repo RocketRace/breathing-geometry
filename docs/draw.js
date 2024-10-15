@@ -1,5 +1,5 @@
 import { mat4 } from "gl-matrix";
-const drawScene = (gl, programInfo, buffers, squareRotation) => {
+export const drawScene = (gl, programInfo, buffers, squareRotation) => {
     // configure clear options and how depth is calculated
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clearDepth(1.0);
@@ -55,4 +55,3 @@ const setColorAttribute = (gl, buffers, programInfo) => {
     gl.vertexAttribPointer(programInfo.attribLocations.vertexColor, numComponents, type, normalize, stride, offset);
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
 };
-export { drawScene };

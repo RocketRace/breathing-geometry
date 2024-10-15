@@ -1,4 +1,4 @@
-const initBuffers = (gl) => {
+export const initBuffers = (gl) => {
     const positionBuffer = initPositionBuffer(gl);
     const colorBuffer = initColorBuffer(gl);
     return {
@@ -39,4 +39,3 @@ const initColorBuffer = (gl) => {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
     return colorBuffer;
 };
-export { initBuffers };
