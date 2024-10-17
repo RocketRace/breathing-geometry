@@ -29,3 +29,36 @@ export const rawCubeFaces = [
     [2, 3, 6, 7],
     [4, 5, 6, 7],
 ];
+const faceCenter = (face, vertices) => {
+    // compute weighted average of points to obtain the center
+    // (for convex polygons, this yields a valid triangulation)
+    let x_a = 0;
+    let y_a = 0;
+    let z_a = 0;
+    face.forEach(i => {
+        const [x, y, z] = vertices[i];
+        x_a += x;
+        y_a += y;
+        z_a += z;
+    });
+    x_a /= face.length;
+    y_a /= face.length;
+    z_a /= face.length;
+    return [x_a, y_a, z_a];
+};
+const triangulateFaces = (faces, vertices) => {
+    let newVertices = [...vertices];
+    let newTriangles = [];
+    faces.forEach(face => {
+        const centerIndex = newVertices.length;
+        newVertices.push(faceCenter(face, vertices));
+        for (let i = 0; i < face.length; i++) {
+            const firstPoint = face[i];
+            const secondPoint = face[(i + 1) % face.length];
+            newTriangles.push([firstPoint, secondPoint, centerIndex]);
+        }
+    });
+    // todo: should the indices be closer together?
+    return [newVertices, newTriangles];
+};
+console.log(triangulateFaces(rawCubeFaces, rawCubeVertices));

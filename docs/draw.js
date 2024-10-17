@@ -1,4 +1,5 @@
 import { mat4 } from "gl-matrix";
+import "./mesh.js";
 export const drawScene = (gl, programInfo, buffers, cubeRotation) => {
     // configure clear options and how depth is calculated
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
