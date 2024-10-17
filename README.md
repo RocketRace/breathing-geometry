@@ -23,7 +23,7 @@ A breathing exercise with regular polyhedra and their spherical geometries.
     - [ ] more?
 - [x] basic ts config setup
 - [x] basic github pages setup
-- [ ] basic 3d webgl skeleton
+- [x] basic 3d webgl skeleton
 - [ ] function to triangulate a mesh to the center of faces
 - [ ] function to subdivide triangular faces to a precision N (powers of 2?)
 - [ ] function to lerp vertices towards a sphere

@@ -36,59 +36,30 @@ const gl = canvas?.getContext("webgl") ?? panic("Unable to initialize WebGL. You
 const vsSource = document.querySelector("#vs")?.textContent ?? "";
 const fsSource = document.querySelector("#fs")?.textContent ?? "";
 const program = createProgram(vsSource, fsSource);
-// "raw" meshes (not normalized or centered at the origin)
-const rawTetrahedronVertices = [
-    [1, 0, -1 / Math.sqrt(2)],
-    [-1, 0, -1 / Math.sqrt(2)],
-    [0, 1, 1 / Math.sqrt(2)],
-    [0, -1, 1 / Math.sqrt(2)],
-];
-const rawTetrahedronFaces = [
-    [0, 1, 2],
-    [0, 1, 3],
-    [0, 2, 3],
-    [1, 2, 3],
-];
-const rawCubeVertices = [
-    [0, 0, 0],
-    [0, 0, 1],
-    [0, 1, 0],
-    [0, 1, 1],
-    [1, 0, 0],
-    [1, 0, 1],
-    [1, 1, 0],
-    [1, 1, 1],
-];
-const rawCubeFaces = [
-    [0, 1, 2, 3],
-    [0, 1, 4, 5],
-    [0, 2, 4, 6],
-    [1, 3, 5, 7],
-    [2, 3, 6, 7],
-    [4, 5, 6, 7],
-];
 const programInfo = {
     program: program,
     attribLocations: {
         vertexPosition: gl.getAttribLocation(program, "aVertexPosition"),
         vertexColor: gl.getAttribLocation(program, "aVertexColor"),
+        vertexNormal: gl.getAttribLocation(program, "aVertexNormal"),
     },
     uniformLocations: {
         projectionMatrix: gl.getUniformLocation(program, "uProjectionMatrix"),
         modelViewMatrix: gl.getUniformLocation(program, "uModelViewMatrix"),
+        normalMatrix: gl.getUniformLocation(program, "uNormalMatrix"),
     },
 };
 const buffers = initBuffers(gl);
 const radPerSecond = 0.5;
-let squareRotation = 0.0;
+let cubeRotation = 0.0;
 let lastFrame = 0;
 // Draw the scene repeatedly
 const render = (nowMillis) => {
     const now = nowMillis * 0.001;
     const deltaTime = now - lastFrame;
     lastFrame = now;
-    drawScene(gl, programInfo, buffers, squareRotation);
-    squareRotation += deltaTime * radPerSecond;
+    drawScene(gl, programInfo, buffers, cubeRotation);
+    cubeRotation += deltaTime * radPerSecond;
     requestAnimationFrame(render);
 };
 requestAnimationFrame(render);
