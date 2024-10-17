@@ -12,13 +12,13 @@ export const rawTetrahedronFaces = [
     [1, 2, 3],
 ];
 export const rawCubeVertices = [
-    [0, 0, 0],
-    [0, 0, 1],
-    [0, 1, 0],
-    [0, 1, 1],
-    [1, 0, 0],
-    [1, 0, 1],
-    [1, 1, 0],
+    [-1, -1, -1],
+    [-1, -1, 1],
+    [-1, 1, -1],
+    [-1, 1, 1],
+    [1, -1, -1],
+    [1, -1, 1],
+    [1, 1, -1],
     [1, 1, 1],
 ];
 export const rawCubeFaces = [
@@ -46,19 +46,37 @@ const faceCenter = (face, vertices) => {
     z_a /= face.length;
     return [x_a, y_a, z_a];
 };
+const computeNormal = ([ax, ay, az], [bx, by, bz], [cx, cy, cz]) => {
+    const [ux, uy, uz] = [bx - ax, by - ay, bz - az];
+    const [vx, vy, vz] = [cx - ax, cy - ay, cz - az];
+    return [
+        uy * vz - uz * vy,
+        uz * vx - ux * vz,
+        ux * vy - uy * vx,
+    ];
+};
 const triangulateFaces = (faces, vertices) => {
-    let newVertices = [...vertices];
-    let newTriangles = [];
+    let newVertices = [];
+    let triangles = [];
+    let normals = [];
     faces.forEach(face => {
-        const centerIndex = newVertices.length;
-        newVertices.push(faceCenter(face, vertices));
+        const center = faceCenter(face, vertices);
         for (let i = 0; i < face.length; i++) {
-            const firstPoint = face[i];
-            const secondPoint = face[(i + 1) % face.length];
-            newTriangles.push([firstPoint, secondPoint, centerIndex]);
+            const vertexIndex = newVertices.length;
+            const a = center;
+            const b = vertices[face[i]];
+            const c = vertices[face[(i + 1) % face.length]];
+            const normal = computeNormal(a, b, c);
+            newVertices.push(a, b, c);
+            triangles.push([vertexIndex, vertexIndex + 1, vertexIndex + 2]);
+            normals.push(normal, normal, normal); // flat shading
         }
     });
     // todo: should the indices be closer together?
-    return [newVertices, newTriangles];
+    const flatVertices = newVertices.flat();
+    const flatTriangles = triangles.flat();
+    const flatNormals = normals.flat();
+    return [flatVertices, flatTriangles, flatNormals];
 };
 export const cube = triangulateFaces(rawCubeFaces, rawCubeVertices);
+console.log(cube);

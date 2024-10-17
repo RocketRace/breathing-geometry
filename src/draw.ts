@@ -1,5 +1,5 @@
 import { mat4 } from "gl-matrix";
-import "./mesh.js";
+import { cube } from "./mesh.js";
 
 export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: any, cubeRotation: number) => {
     // configure clear options and how depth is calculated
@@ -79,7 +79,7 @@ export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: 
 
 
     {
-        const vertexCount = 36;
+        const vertexCount = cube[0].length / 3;
         const type = gl.UNSIGNED_SHORT;
         const offset = 0;
         gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
