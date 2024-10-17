@@ -50,7 +50,7 @@ const programInfo = {
     program: program,
     attribLocations: {
         vertexPosition: gl.getAttribLocation(program, "aVertexPosition"),
-        vertexColor: gl.getAttribLocation(program, "aVertexColor"),
+        // vertexColor: gl.getAttribLocation(program, "aVertexColor"),
         vertexNormal: gl.getAttribLocation(program, "aVertexNormal"),
     },
     uniformLocations: {

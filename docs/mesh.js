@@ -61,4 +61,4 @@ const triangulateFaces = (faces, vertices) => {
     // todo: should the indices be closer together?
     return [newVertices, newTriangles];
 };
-console.log(triangulateFaces(rawCubeFaces, rawCubeVertices));
+export const cube = triangulateFaces(rawCubeFaces, rawCubeVertices);

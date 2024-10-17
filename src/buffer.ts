@@ -1,12 +1,12 @@
 export const initBuffers = (gl: WebGLRenderingContext) => {
     const positionBuffer = initPositionBuffer(gl);
-    const colorBuffer = initColorBuffer(gl);
+    // const colorBuffer = initColorBuffer(gl);
     const indexBuffer = initIndexBuffer(gl);
     const normalBuffer = initNormalBuffer(gl);
 
     return {
         position: positionBuffer,
-        color: colorBuffer,
+        // color: colorBuffer,
         indices: indexBuffer,
         normals: normalBuffer,
     };

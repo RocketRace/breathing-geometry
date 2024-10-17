@@ -15,7 +15,7 @@
     </script>
     <script id="vs" type="x-shader/x-vertex">
         attribute vec4 aVertexPosition;
-        attribute vec4 aVertexColor;
+        // attribute vec4 aVertexColor;
         attribute vec3 aVertexNormal;
         
         uniform mat4 uNormalMatrix;
@@ -27,7 +27,8 @@
     
         void main(void) {
             gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-            vColor = aVertexColor;
+            // vColor = aVertexColor
+            vColor = vec4(1.0, 0.0, 0.0, 1.0);
             // Apply lighting effect
         
             highp vec3 ambientLight = vec3(0.3, 0.3, 0.3);

@@ -37,7 +37,7 @@ export const drawScene = (gl, programInfo, buffers, cubeRotation) => {
     mat4.transpose(normalMatrix, normalMatrix);
     // tell WebGL how to pull out data from buffers to attributes
     setPositionAttribute(gl, buffers, programInfo);
-    setColorAttribute(gl, buffers, programInfo);
+    // setColorAttribute(gl, buffers, programInfo);
     setNormalAttribute(gl, buffers, programInfo);
     // activate the index buffer (for the drawElements call later)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);

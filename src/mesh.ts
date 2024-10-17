@@ -72,4 +72,4 @@ const triangulateFaces = (faces: Face[], vertices: Vertex[]): [Vertex[], Triangl
     return [newVertices, newTriangles];
 }
 
-console.log(triangulateFaces(rawCubeFaces, rawCubeVertices));
+export const cube = triangulateFaces(rawCubeFaces, rawCubeVertices);
