@@ -1,5 +1,6 @@
 import { initBuffers } from "./buffer.js";
 import { drawScene } from "./draw.js";
+import { cube } from "./mesh.js";
 
 // JS utilities
 const panic = (msg: string) => {
@@ -60,7 +61,7 @@ const programInfo = {
     },
 };
 
-const buffers = initBuffers(gl);
+const buffers = initBuffers(gl, cube);
 
 const radPerSecond = 0.5;
 let cubeRotation = 0.0;

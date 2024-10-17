@@ -98,4 +98,5 @@ const triangulateFaces = (faces: Face[], vertices: Vertex[]): [number[], number[
     return [flatVertices, flatTriangles, flatNormals];
 }
 
+export const tetrahedron = triangulateFaces(rawTetrahedronFaces, rawTetrahedronVertices);
 export const cube = triangulateFaces(rawCubeFaces, rawCubeVertices);

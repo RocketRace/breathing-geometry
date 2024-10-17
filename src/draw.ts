@@ -31,21 +31,9 @@ export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: 
     mat4.rotate(
         modelViewMatrix, // destination matrix
         modelViewMatrix, // matrix to rotate
-        cubeRotation, // amount to rotate in radians
-        [0, 0, 1],
-    ); // axis to rotate around (Z)
-    mat4.rotate(
-        modelViewMatrix, // destination matrix
-        modelViewMatrix, // matrix to rotate
         cubeRotation * 0.7, // amount to rotate in radians
         [0, 1, 0],
-    ); // axis to rotate around (Y)
-    mat4.rotate(
-        modelViewMatrix, // destination matrix
-        modelViewMatrix, // matrix to rotate
-        cubeRotation * 0.3, // amount to rotate in radians
-        [1, 0, 0],
-    ); // axis to rotate around (X)
+    );
     const normalMatrix = mat4.create();
     mat4.invert(normalMatrix, modelViewMatrix);
     mat4.transpose(normalMatrix, normalMatrix);

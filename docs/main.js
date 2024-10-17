@@ -1,5 +1,6 @@
 import { initBuffers } from "./buffer.js";
 import { drawScene } from "./draw.js";
+import { cube } from "./mesh.js";
 // JS utilities
 const panic = (msg) => {
     alert(msg);
@@ -49,7 +50,7 @@ const programInfo = {
         normalMatrix: gl.getUniformLocation(program, "uNormalMatrix"),
     },
 };
-const buffers = initBuffers(gl);
+const buffers = initBuffers(gl, cube);
 const radPerSecond = 0.5;
 let cubeRotation = 0.0;
 let lastFrame = 0;
