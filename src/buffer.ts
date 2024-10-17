@@ -4,6 +4,7 @@ export const initBuffers = (gl: WebGLRenderingContext, mesh: [number[], number[]
     const normalBuffer = initNormalBuffer(gl, mesh[2]);
 
     return {
+        vertexCount: mesh[0].length / 3,
         position: positionBuffer,
         indices: indexBuffer,
         normals: normalBuffer,

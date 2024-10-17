@@ -50,17 +50,17 @@ const programInfo = {
         normalMatrix: gl.getUniformLocation(program, "uNormalMatrix"),
     },
 };
-const buffers = initBuffers(gl, cube);
+let buffers = initBuffers(gl, cube);
 const radPerSecond = 0.5;
-let cubeRotation = 0.0;
+let rotation = 0.0;
 let lastFrame = 0;
 // Draw the scene repeatedly
 const render = (nowMillis) => {
     const now = nowMillis * 0.001;
     const deltaTime = now - lastFrame;
     lastFrame = now;
-    drawScene(gl, programInfo, buffers, cubeRotation);
-    cubeRotation += deltaTime * radPerSecond;
+    drawScene(gl, programInfo, buffers, rotation);
+    rotation += deltaTime * radPerSecond;
     requestAnimationFrame(render);
 };
 requestAnimationFrame(render);

@@ -1,7 +1,6 @@
 import { mat4 } from "gl-matrix";
-import { cube } from "./mesh.js";
 
-export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: any, cubeRotation: number) => {
+export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: any, rotation: number) => {
     // configure clear options and how depth is calculated
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clearDepth(1.0);
@@ -31,7 +30,7 @@ export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: 
     mat4.rotate(
         modelViewMatrix, // destination matrix
         modelViewMatrix, // matrix to rotate
-        cubeRotation * 0.7, // amount to rotate in radians
+        rotation * 0.7, // amount to rotate in radians
         [0, 1, 0],
     );
     const normalMatrix = mat4.create();
@@ -67,7 +66,7 @@ export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: 
 
 
     {
-        const vertexCount = cube[0].length / 3;
+        const vertexCount = buffers.vertexCount;
         const type = gl.UNSIGNED_SHORT;
         const offset = 0;
         gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);

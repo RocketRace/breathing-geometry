@@ -1,6 +1,6 @@
 import { initBuffers } from "./buffer.js";
 import { drawScene } from "./draw.js";
-import { cube } from "./mesh.js";
+import { cube, tetrahedron } from "./mesh.js";
 
 // JS utilities
 const panic = (msg: string) => {
@@ -61,10 +61,10 @@ const programInfo = {
     },
 };
 
-const buffers = initBuffers(gl, cube);
+let buffers = initBuffers(gl, cube);
 
 const radPerSecond = 0.5;
-let cubeRotation = 0.0;
+let rotation = 0.0;
 let lastFrame = 0;
 
 // Draw the scene repeatedly
@@ -73,8 +73,8 @@ const render = (nowMillis: number) => {
     const deltaTime = now - lastFrame;
     lastFrame = now;
 
-    drawScene(gl, programInfo, buffers, cubeRotation);
-    cubeRotation += deltaTime * radPerSecond;
+    drawScene(gl, programInfo, buffers, rotation);
+    rotation += deltaTime * radPerSecond;
 
     requestAnimationFrame(render);
 }
