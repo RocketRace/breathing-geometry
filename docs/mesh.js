@@ -63,6 +63,7 @@ const computeNormal = ([ax, ay, az], [bx, by, bz], [cx, cy, cz]) => {
         return [-nx / n, -ny / n, -nz / n];
     }
 };
+const halve = ([ax, ay, az], [bx, by, bz]) => [(ax + bx) / 2, (ay + by) / 2, (az + bz) / 2];
 const triangulateFaces = (faces, vertices) => {
     let newVertices = [];
     let triangles = [];
@@ -71,13 +72,14 @@ const triangulateFaces = (faces, vertices) => {
         const center = faceCenter(face, vertices);
         for (let i = 0; i < face.length; i++) {
             const vertexIndex = newVertices.length;
-            const a = center;
             const b = vertices[face[i]];
             const c = vertices[face[(i + 1) % face.length]];
-            const normal = computeNormal(a, b, c);
-            newVertices.push(a, b, c);
-            triangles.push([vertexIndex, vertexIndex + 1, vertexIndex + 2]);
-            normals.push(normal, normal, normal); // flat shading
+            const halfway = halve(b, c);
+            newVertices.push(center, halfway, b, center, halfway, c);
+            triangles.push([vertexIndex, vertexIndex + 1, vertexIndex + 2], [vertexIndex + 3, vertexIndex + 4, vertexIndex + 5]);
+            const normal1 = computeNormal(center, halfway, b);
+            const normal2 = computeNormal(center, halfway, c);
+            normals.push(normal1, normal1, normal1, normal2, normal2, normal2); // flat shading
         }
     });
     // todo: should the indices be closer together?

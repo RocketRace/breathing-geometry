@@ -26,7 +26,8 @@
         varying highp vec3 vLighting;
     
         void main(void) {
-            gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+            vec4 scaledPosition = vec4(normalize(aVertexPosition.xyz), aVertexPosition.w);
+            gl_Position = uProjectionMatrix * uModelViewMatrix * scaledPosition;
             // vColor = aVertexColor
             vColor = vec4(1.0, 0.0, 0.0, 1.0);
             // Apply lighting effect
