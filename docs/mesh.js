@@ -22,12 +22,12 @@ export const rawCubeVertices = [
     [1, 1, 1],
 ];
 export const rawCubeFaces = [
-    [0, 1, 2, 3],
-    [0, 1, 4, 5],
-    [0, 2, 4, 6],
-    [1, 3, 5, 7],
-    [2, 3, 6, 7],
-    [4, 5, 6, 7],
+    [0, 1, 3, 2],
+    [0, 1, 5, 4],
+    [0, 2, 6, 4],
+    [1, 3, 7, 5],
+    [2, 3, 7, 6],
+    [4, 5, 7, 6],
 ];
 const faceCenter = (face, vertices) => {
     // compute weighted average of points to obtain the center
@@ -49,11 +49,19 @@ const faceCenter = (face, vertices) => {
 const computeNormal = ([ax, ay, az], [bx, by, bz], [cx, cy, cz]) => {
     const [ux, uy, uz] = [bx - ax, by - ay, bz - az];
     const [vx, vy, vz] = [cx - ax, cy - ay, cz - az];
-    return [
+    const [nx, ny, nz] = [
         uy * vz - uz * vy,
         uz * vx - ux * vz,
         ux * vy - uy * vx,
     ];
+    // normalize the normal, and face it away from the origin
+    const n = Math.sqrt(nx ** 2 + ny ** 2 + nz ** 2);
+    if (nx * ax + ny * ay + nz * az > 0) {
+        return [nx / n, ny / n, nz / n];
+    }
+    else {
+        return [-nx / n, -ny / n, -nz / n];
+    }
 };
 const triangulateFaces = (faces, vertices) => {
     let newVertices = [];
@@ -67,6 +75,7 @@ const triangulateFaces = (faces, vertices) => {
             const b = vertices[face[i]];
             const c = vertices[face[(i + 1) % face.length]];
             const normal = computeNormal(a, b, c);
+            console.log(a, b, c, normal);
             newVertices.push(a, b, c);
             triangles.push([vertexIndex, vertexIndex + 1, vertexIndex + 2]);
             normals.push(normal, normal, normal); // flat shading
