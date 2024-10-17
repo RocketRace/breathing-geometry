@@ -85,7 +85,6 @@ const triangulateFaces = (faces: Face[], vertices: Vertex[]): [number[], number[
             const b = vertices[face[i]];
             const c = vertices[face[(i + 1) % face.length]];
             const normal = computeNormal(a, b, c);
-            console.log(a, b, c, normal);
             newVertices.push(a, b, c);
             triangles.push([vertexIndex, vertexIndex + 1, vertexIndex + 2]);
             normals.push(normal, normal, normal); // flat shading
@@ -100,5 +99,3 @@ const triangulateFaces = (faces: Face[], vertices: Vertex[]): [number[], number[
 }
 
 export const cube = triangulateFaces(rawCubeFaces, rawCubeVertices);
-
-console.log(cube);
