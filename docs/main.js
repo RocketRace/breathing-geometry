@@ -59,7 +59,7 @@ const render = (nowMillis) => {
     const now = nowMillis * 0.001;
     const deltaTime = now - lastFrame;
     lastFrame = now;
-    const factor = (Math.sin(now * 2) + 1) / 2;
+    const factor = (Math.sin(now * 1.5) + 1) / 2;
     mesh.spherify(factor);
     updateBuffers(gl, mesh, buffers);
     drawScene(gl, programInfo, buffers, rotation);

@@ -16,9 +16,9 @@ export const drawScene = (gl, programInfo, buffers, rotation) => {
     const projectionMatrix = mat4.create();
     // first argument is destination
     mat4.perspective(projectionMatrix, fieldOfView, aspectRatio, ...zRange);
-    // place the cube 6 units away and rotated around the z-axis
+    // place the cube 3 units away and rotated around the z-axis
     const modelViewMatrix = mat4.create();
-    mat4.translate(modelViewMatrix, modelViewMatrix, [0.0, 0.0, -6.0]);
+    mat4.translate(modelViewMatrix, modelViewMatrix, [0.0, 0.0, -3.0]);
     mat4.rotate(modelViewMatrix, // destination matrix
     modelViewMatrix, // matrix to rotate
     rotation * 0.7, // amount to rotate in radians
