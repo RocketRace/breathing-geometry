@@ -26,8 +26,8 @@ A breathing exercise with regular polyhedra and their spherical geometries.
 - [x] basic 3d webgl skeleton
 - [x] function to triangulate a mesh to the center of faces
 - [ ] function to subdivide triangular faces to a precision N (powers of 2?)
-- [ ] function to lerp vertices towards a sphere
+- [x] function to lerp vertices towards a sphere
 - [ ] somehow encode the fundamental domains for each mesh
-- [ ] timer for animation
+- [x] timer for animation
 - [ ] ui buttons for mesh selection
 - [ ] render transparently on top of a background image

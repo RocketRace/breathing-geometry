@@ -1,4 +1,4 @@
-import { initBuffers } from "./buffer.js";
+import { initBuffers, updateBuffers } from "./buffer.js";
 import { drawScene } from "./draw.js";
 import { cube } from "./mesh.js";
 // JS utilities
@@ -49,7 +49,6 @@ const programInfo = {
         normalMatrix: gl.getUniformLocation(program, "uNormalMatrix"),
     },
 };
-cube.spherify(1.0);
 let buffers = initBuffers(gl, cube);
 const radPerSecond = 0.5;
 let rotation = 0.0;
@@ -59,6 +58,9 @@ const render = (nowMillis) => {
     const now = nowMillis * 0.001;
     const deltaTime = now - lastFrame;
     lastFrame = now;
+    const factor = (Math.sin(now * 2) + 1) / 2;
+    cube.spherify(factor);
+    updateBuffers(gl, cube, buffers);
     drawScene(gl, programInfo, buffers, rotation);
     rotation += deltaTime * radPerSecond;
     requestAnimationFrame(render);

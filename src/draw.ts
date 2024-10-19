@@ -77,12 +77,10 @@ export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: 
     );
 
 
-    {
-        const vertexCount = buffers.vertexCount;
-        const type = gl.UNSIGNED_SHORT;
-        const offset = 0;
-        gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
-    }
+    const vertexCount = buffers.vertexCount;
+    const type = gl.UNSIGNED_SHORT;
+    const offset = 0;
+    gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
 }
 
 // how to compute vertexPosition from the buffers given

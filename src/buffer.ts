@@ -1,9 +1,22 @@
 import { Mesh } from "./mesh";
 
 export const initBuffers = (gl: WebGLRenderingContext, mesh: Mesh) => {
-    const positionBuffer = initPositionBuffer(gl, mesh.vertices);
-    const indexBuffer = initIndexBuffer(gl, mesh.triangles);
-    const normalBuffer = initNormalBuffer(gl, mesh.normals);
+    // create and activate buffer
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.vertices), gl.DYNAMIC_DRAW);
+    
+    const indexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(mesh.triangles), gl.STATIC_DRAW);
+    
+    const normalBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);    
+    gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array(mesh.normals),
+        gl.DYNAMIC_DRAW,
+    );
 
     return {
         vertexCount: mesh.vertices.length / 3,
@@ -13,13 +26,13 @@ export const initBuffers = (gl: WebGLRenderingContext, mesh: Mesh) => {
     };
 }
 
-const initPositionBuffer = (gl: WebGLRenderingContext, vertices: number[]) => {
-    // create and activate buffer
-    const positionBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-    return positionBuffer;
+export const updateBuffers = (gl: WebGLRenderingContext, mesh: Mesh, buffers: any) => {
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.vertices), gl.DYNAMIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.normals);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.normals), gl.DYNAMIC_DRAW);
 }
+
 
 const initColorBuffer = (gl: WebGLRenderingContext) => {
     const faceColors = [
@@ -44,31 +57,4 @@ const initColorBuffer = (gl: WebGLRenderingContext) => {
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
 
     return colorBuffer;
-}
-
-function initIndexBuffer(gl: WebGLRenderingContext, indices: number[]) {
-    const indexBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-    
-    // Now send the element array to GL
-    gl.bufferData(
-        gl.ELEMENT_ARRAY_BUFFER,
-        new Uint16Array(indices),
-        gl.STATIC_DRAW,
-    );
-
-    return indexBuffer;
-}
-
-function initNormalBuffer(gl: WebGLRenderingContext, normals: number[]) {
-    const normalBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
-    
-    gl.bufferData(
-        gl.ARRAY_BUFFER,
-        new Float32Array(normals),
-        gl.STATIC_DRAW,
-    );
-
-    return normalBuffer;
 }

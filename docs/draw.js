@@ -46,12 +46,10 @@ export const drawScene = (gl, programInfo, buffers, rotation) => {
     gl.uniformMatrix4fv(programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
     gl.uniformMatrix4fv(programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
     gl.uniformMatrix4fv(programInfo.uniformLocations.normalMatrix, false, normalMatrix);
-    {
-        const vertexCount = buffers.vertexCount;
-        const type = gl.UNSIGNED_SHORT;
-        const offset = 0;
-        gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
-    }
+    const vertexCount = buffers.vertexCount;
+    const type = gl.UNSIGNED_SHORT;
+    const offset = 0;
+    gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
 };
 // how to compute vertexPosition from the buffers given
 const setPositionAttribute = (gl, buffers, programInfo) => {
