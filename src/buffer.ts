@@ -1,10 +1,12 @@
-export const initBuffers = (gl: WebGLRenderingContext, mesh: [number[], number[], number[]]) => {
-    const positionBuffer = initPositionBuffer(gl, mesh[0]);
-    const indexBuffer = initIndexBuffer(gl, mesh[1]);
-    const normalBuffer = initNormalBuffer(gl, mesh[2]);
+import { Mesh } from "./mesh";
+
+export const initBuffers = (gl: WebGLRenderingContext, mesh: Mesh) => {
+    const positionBuffer = initPositionBuffer(gl, mesh.vertices);
+    const indexBuffer = initIndexBuffer(gl, mesh.triangles);
+    const normalBuffer = initNormalBuffer(gl, mesh.normals);
 
     return {
-        vertexCount: mesh[0].length / 3,
+        vertexCount: mesh.vertices.length / 3,
         position: positionBuffer,
         indices: indexBuffer,
         normals: normalBuffer,

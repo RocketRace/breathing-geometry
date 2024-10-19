@@ -1,19 +1,19 @@
 // "raw" meshes (not normalized / centered at the origin)
-export const rawTetrahedronVertices = [
+const rawTetrahedronVertices = [
     [1, 0, -1 / Math.sqrt(2)] as const,
     [-1, 0, -1 / Math.sqrt(2)] as const,
     [0, 1, 1 / Math.sqrt(2)] as const,
     [0, -1, 1 / Math.sqrt(2)] as const,
 ];
 
-export const rawTetrahedronFaces = [
+const rawTetrahedronFaces = [
     [0, 1, 2] as const,
     [0, 1, 3] as const,
     [0, 2, 3] as const,
     [1, 2, 3] as const,
 ];
 
-export const rawCubeVertices = [
+const rawCubeVertices = [
     [-1, -1, -1] as const,
     [-1, -1, 1] as const,
     [-1, 1, -1] as const,
@@ -24,7 +24,7 @@ export const rawCubeVertices = [
     [1, 1, 1] as const,
 ];
 
-export const rawCubeFaces = [
+const rawCubeFaces = [
     [0, 1, 3, 2] as const,
     [0, 1, 5, 4] as const,
     [0, 2, 6, 4] as const,
@@ -75,35 +75,39 @@ const computeNormal = ([ax, ay, az]: Vertex, [bx, by, bz]: Vertex, [cx, cy, cz]:
 
 const halve = ([ax, ay, az]: Vertex, [bx, by, bz]: Vertex): Vertex => [(ax + bx) / 2, (ay + by) / 2, (az + bz) / 2];
 
-const triangulateFaces = (faces: Face[], vertices: Vertex[]): [number[], number[], number[]] => {
-    let newVertices: Vertex[] = [];
-    let triangles: Triangle[] = [];
-    let normals: Normal[] = [];
-    faces.forEach(face => {
-        const center = faceCenter(face, vertices);
-        for (let i = 0; i < face.length; i++) {
-            const vertexIndex = newVertices.length;
-            const b = vertices[face[i]];
-            const c = vertices[face[(i + 1) % face.length]];
-            const halfway = halve(b, c);
-            
-            newVertices.push(center, halfway, b, center, halfway, c);
-            triangles.push(
-                [vertexIndex, vertexIndex + 1, vertexIndex + 2],
-                [vertexIndex + 3, vertexIndex + 4, vertexIndex + 5],
-            );
-            const normal1 = computeNormal(center, halfway, b);
-            const normal2 = computeNormal(center, halfway, c);
-            normals.push(normal1, normal1, normal1, normal2, normal2, normal2); // flat shading
-        }
-    });
-    // todo: should the indices be closer together?
+export class Mesh {
+    vertices: number[]
+    triangles: number[]
+    normals: number[]
+    constructor(rawVertices: Vertex[], rawFaces: Face[]) {
+        let newVertices: Vertex[] = [];
+        let triangles: Triangle[] = [];
+        let normals: Normal[] = [];
+        rawFaces.forEach(face => {
+            const center = faceCenter(face, rawVertices);
+            for (let i = 0; i < face.length; i++) {
+                const vertexIndex = newVertices.length;
+                const b = rawVertices[face[i]];
+                const c = rawVertices[face[(i + 1) % face.length]];
+                const halfway = halve(b, c);
+                
+                newVertices.push(center, halfway, b, center, halfway, c);
+                triangles.push(
+                    [vertexIndex, vertexIndex + 1, vertexIndex + 2],
+                    [vertexIndex + 3, vertexIndex + 4, vertexIndex + 5],
+                );
+                const normal1 = computeNormal(center, halfway, b);
+                const normal2 = computeNormal(center, halfway, c);
+                normals.push(normal1, normal1, normal1, normal2, normal2, normal2); // flat shading
+            }
+        });
+        // todo: should the indices be closer together?
 
-    const flatVertices = newVertices.flat();
-    const flatTriangles = triangles.flat();
-    const flatNormals = normals.flat();
-    return [flatVertices, flatTriangles, flatNormals];
+        this.vertices = newVertices.flat();
+        this.triangles = triangles.flat();
+        this.normals = normals.flat();
+    }
 }
 
-export const tetrahedron = triangulateFaces(rawTetrahedronFaces, rawTetrahedronVertices);
-export const cube = triangulateFaces(rawCubeFaces, rawCubeVertices);
+export const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces);
+export const cube = new Mesh(rawCubeVertices, rawCubeFaces);

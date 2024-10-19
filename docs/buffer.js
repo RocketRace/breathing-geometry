@@ -1,9 +1,9 @@
 export const initBuffers = (gl, mesh) => {
-    const positionBuffer = initPositionBuffer(gl, mesh[0]);
-    const indexBuffer = initIndexBuffer(gl, mesh[1]);
-    const normalBuffer = initNormalBuffer(gl, mesh[2]);
+    const positionBuffer = initPositionBuffer(gl, mesh.vertices);
+    const indexBuffer = initIndexBuffer(gl, mesh.triangles);
+    const normalBuffer = initNormalBuffer(gl, mesh.normals);
     return {
-        vertexCount: mesh[0].length / 3,
+        vertexCount: mesh.vertices.length / 3,
         position: positionBuffer,
         indices: indexBuffer,
         normals: normalBuffer,
