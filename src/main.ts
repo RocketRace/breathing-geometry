@@ -51,7 +51,6 @@ const programInfo = {
     program: program,
     attribLocations: {
         vertexPosition: gl.getAttribLocation(program, "aVertexPosition"),
-        // vertexColor: gl.getAttribLocation(program, "aVertexColor"),
         vertexNormal: gl.getAttribLocation(program, "aVertexNormal"),
     },
     uniformLocations: {
@@ -60,6 +59,8 @@ const programInfo = {
         normalMatrix: gl.getUniformLocation(program, "uNormalMatrix"),
     },
 };
+
+cube.spherify(1.0);
 
 let buffers = initBuffers(gl, cube);
 
