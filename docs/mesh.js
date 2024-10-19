@@ -82,7 +82,7 @@ const normalize = ([x, y, z]) => {
 const halve = ([ax, ay, az], [bx, by, bz]) => [(ax + bx) / 2, (ay + by) / 2, (az + bz) / 2];
 const lerp = (a, b, factor) => a * (1 - factor) + b * factor;
 export class Mesh {
-    constructor(rawVertices, rawFaces) {
+    constructor(rawVertices, rawFaces, subdivision) {
         const scaledVertices = scaleVertices(rawVertices);
         let vertices = [];
         let triangles = [];
@@ -106,6 +106,52 @@ export class Mesh {
         this.vertices = vertices.flat();
         this.triangles = triangles.flat();
         this.normals = normals.flat();
+        this.subdivide(subdivision);
+    }
+    subdivide(exponent) {
+        if (exponent == 0) {
+            return;
+        }
+        let newVertices = [];
+        let newTriangles = [];
+        let newNormals = [];
+        for (let i = 0; i < this.triangles.length; i += 3) {
+            const ia = this.triangles[i] * 3;
+            const a = [
+                this.baseVertices[ia],
+                this.baseVertices[ia + 1],
+                this.baseVertices[ia + 2],
+            ];
+            const ib = this.triangles[i + 1] * 3;
+            const b = [
+                this.baseVertices[ib],
+                this.baseVertices[ib + 1],
+                this.baseVertices[ib + 2],
+            ];
+            const ic = this.triangles[i + 2] * 3;
+            const c = [
+                this.baseVertices[ic],
+                this.baseVertices[ic + 1],
+                this.baseVertices[ic + 2],
+            ];
+            const n = [
+                this.normals[ia],
+                this.normals[ia + 1],
+                this.normals[ia + 2],
+            ];
+            // A is the split line, and halfway between B and C is the new vertex. 
+            // Then create triangles with the halfway as the new A
+            const halfway = halve(b, c);
+            const index = newVertices.length;
+            newVertices.push(halfway, a, b, halfway, a, c);
+            newNormals.push(n, n, n, n, n, n);
+            newTriangles.push([index, index + 1, index + 2], [index + 3, index + 4, index + 5]);
+        }
+        this.baseVertices = [...newVertices.flat()];
+        this.vertices = newVertices.flat();
+        this.triangles = newTriangles.flat();
+        this.normals = newNormals.flat();
+        this.subdivide(exponent - 1);
     }
     recomputeNormals() {
         for (let i = 0; i < this.triangles.length; i += 3) {
@@ -131,5 +177,6 @@ export class Mesh {
         this.recomputeNormals();
     }
 }
-export const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces);
-export const cube = new Mesh(rawCubeVertices, rawCubeFaces);
+const subdivisionFactor = 8;
+export const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces, subdivisionFactor);
+export const cube = new Mesh(rawCubeVertices, rawCubeFaces, subdivisionFactor);

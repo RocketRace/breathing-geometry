@@ -25,7 +25,7 @@ A breathing exercise with regular polyhedra and their spherical geometries.
 - [x] basic github pages setup
 - [x] basic 3d webgl skeleton
 - [x] function to triangulate a mesh to the center of faces
-- [ ] function to subdivide triangular faces to a precision N (powers of 2?)
+- [x] function to subdivide triangular faces to a precision N (powers of 2?)
 - [x] function to lerp vertices towards a sphere
 - [ ] somehow encode the fundamental domains for each mesh
 - [x] timer for animation

@@ -60,7 +60,8 @@ const programInfo = {
     },
 };
 
-let buffers = initBuffers(gl, cube);
+let mesh = tetrahedron;
+let buffers = initBuffers(gl, mesh);
 
 const radPerSecond = 0.5;
 let rotation = 0.0;
@@ -73,8 +74,8 @@ const render = (nowMillis: number) => {
     lastFrame = now;
 
     const factor = (Math.sin(now * 2) + 1) / 2;
-    cube.spherify(factor);
-    updateBuffers(gl, cube, buffers);
+    mesh.spherify(factor);
+    updateBuffers(gl, mesh, buffers);
     drawScene(gl, programInfo, buffers, rotation);
     rotation += deltaTime * radPerSecond;
 
