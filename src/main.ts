@@ -1,6 +1,6 @@
 import { initBuffers, updateBuffers } from "./buffer.js";
 import { drawScene } from "./draw.js";
-import { cube, tetrahedron } from "./mesh.js";
+import { cube, octahedron, tetrahedron } from "./mesh.js";
 
 // JS utilities
 const panic = (msg: string) => {
@@ -60,8 +60,8 @@ const programInfo = {
     },
 };
 
-let mesh = tetrahedron;
-let buffers = initBuffers(gl, mesh);
+let mesh = octahedron;
+const buffers = initBuffers(gl, mesh);
 
 const radPerSecond = 0.5;
 let rotation = 0.0;

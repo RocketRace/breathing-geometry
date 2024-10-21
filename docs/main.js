@@ -1,6 +1,6 @@
 import { initBuffers, updateBuffers } from "./buffer.js";
 import { drawScene } from "./draw.js";
-import { tetrahedron } from "./mesh.js";
+import { octahedron } from "./mesh.js";
 // JS utilities
 const panic = (msg) => {
     alert(msg);
@@ -49,8 +49,8 @@ const programInfo = {
         normalMatrix: gl.getUniformLocation(program, "uNormalMatrix"),
     },
 };
-let mesh = tetrahedron;
-let buffers = initBuffers(gl, mesh);
+let mesh = octahedron;
+const buffers = initBuffers(gl, mesh);
 const radPerSecond = 0.5;
 let rotation = 0.0;
 let lastFrame = 0;

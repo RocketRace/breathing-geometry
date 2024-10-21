@@ -1,9 +1,9 @@
 // "raw" meshes (not normalized / centered at the origin)
 const rawTetrahedronVertices = [
-    [1, 0, -1 / Math.sqrt(2)] as const,
-    [-1, 0, -1 / Math.sqrt(2)] as const,
-    [0, 1, 1 / Math.sqrt(2)] as const,
-    [0, -1, 1 / Math.sqrt(2)] as const,
+    [Math.sqrt(8/9), 0, -1/3] as const,
+    [-Math.sqrt(2/9), Math.sqrt(2/3), -1/3] as const,
+    [-Math.sqrt(2/9), -Math.sqrt(2/3), -1/3] as const,
+    [0, 0, 1] as const,
 ];
 
 const rawTetrahedronFaces = [
@@ -31,6 +31,26 @@ const rawCubeFaces = [
     [1, 3, 7, 5] as const,
     [2, 3, 7, 6] as const,
     [4, 5, 7, 6] as const,
+];
+
+const rawOctahedronVertices = [
+    [1, 0, 0] as const,
+    [0, 1, 0] as const,
+    [0, 0, 1] as const,
+    [-1, 0, 0] as const,
+    [0, -1, 0] as const,
+    [0, 0, -1] as const,
+];
+
+const rawOctahedronFaces = [
+    [0, 1, 2] as const,
+    [0, 1, 5] as const,
+    [0, 4, 2] as const,
+    [0, 4, 5] as const,
+    [3, 1, 2] as const,
+    [3, 1, 5] as const,
+    [3, 4, 2] as const,
+    [3, 4, 5] as const,
 ];
 
 type Vertex = readonly [number, number, number];
@@ -210,3 +230,4 @@ export class Mesh {
 const subdivisionFactor = 8;
 export const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces, subdivisionFactor);
 export const cube = new Mesh(rawCubeVertices, rawCubeFaces, subdivisionFactor);
+export const octahedron = new Mesh(rawOctahedronVertices, rawOctahedronFaces, subdivisionFactor);
