@@ -16,7 +16,7 @@ A breathing exercise with regular polyhedra and their spherical geometries.
 
 - Get a mesh for
     - [x] tetrahedron
-    - [ ] octahedron
+    - [x] octahedron
     - [x] cube
     - [ ] dodecahedron
     - [ ] icosahedron
@@ -29,5 +29,5 @@ A breathing exercise with regular polyhedra and their spherical geometries.
 - [x] function to lerp vertices towards a sphere
 - [ ] somehow encode the fundamental domains for each mesh
 - [x] timer for animation
-- [ ] ui buttons for mesh selection
+- [x] ui buttons for mesh selection
 - [ ] render transparently on top of a background image
