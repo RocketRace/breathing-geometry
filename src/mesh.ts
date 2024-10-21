@@ -160,7 +160,7 @@ export class Mesh {
     vertices: number[]
     normals: number[]
     triangles: number[]
-    constructor(rawVertices: Vertex[], rawFaces: Face[], subdivision: number) {
+    constructor(rawVertices: Vertex[], rawFaces: Face[]) {
         const scaledVertices = scaleVertices(rawVertices);
         let vertices: Vertex[] = [];
         let triangles: Triangle[] = [];
@@ -188,7 +188,9 @@ export class Mesh {
         this.vertices = vertices.flat();
         this.triangles = triangles.flat();
         this.normals = normals.flat();
-        this.subdivide(subdivision);
+        // the maximum amount of subdivisions until we cap out at 65536 vertices
+        const autoSubdivisionFactor = Math.floor(Math.log2((2 ** 16) / this.triangles.length - 2));
+        this.subdivide(autoSubdivisionFactor);
     }
     subdivide(exponent: number) {
         if (exponent == 0) {
@@ -267,7 +269,32 @@ export class Mesh {
     }
 }
 
-const dualMesh = (originalVertices: Vertex[], originalFaces: Face[], subdivisionFactor: number): Mesh => {
+const sortFace = (face: Face, vertices: Vertex[]): Face => {
+    const [cx, cy, cz] = faceCenter(face, vertices);
+    let [rx, ry, rz] = vertices[face[0]];
+    let sortedFace = [face[0]];
+    let remaining = [...face.slice(1)];
+    const len = remaining.length;
+    for (let i = 0; i < len; i++) {
+        let naiveAngles: [number, number, number][] = [];
+        remaining.forEach((vertexIndex, remIndex) => {
+            let [ix, iy, iz] = vertices[vertexIndex];
+            let dot = (ix - cx) * (rx - cx) + (iy - cy) * (ry - cy) + (iz - cz) * (rz - cz);
+            let im = Math.sqrt((ix - cx) ** 2 + (iy - cy) ** 2 + (iz - cz) ** 2);
+            let rm = Math.sqrt((rx - cx) ** 2 + (ry - cy) ** 2 + (rz - cz) ** 2);
+            naiveAngles.push([Math.acos(dot / im / rm), vertexIndex, remIndex]);
+        });
+        // inefficient but idc here
+        naiveAngles.sort((a, b) => a[0] - b[0]);
+        const [_, minVertex, remIndex] = naiveAngles[0];
+        sortedFace.push(minVertex);
+        [rx, ry, rz] = vertices[minVertex];
+        remaining.splice(remIndex, 1);
+    }
+    return sortedFace;
+}
+
+const dualMesh = (originalVertices: Vertex[], originalFaces: Face[]): Mesh => {
     const scaledVertices = scaleVertices(originalVertices);
     let vertices: Vertex[] = [];
     let faces: Face[] = [];
@@ -284,16 +311,16 @@ const dualMesh = (originalVertices: Vertex[], originalFaces: Face[], subdivision
         })
         faces.push([...newFace]);
     });
+    const sortedFaces = faces.map(face => sortFace(face, vertices));
 
-    return new Mesh(vertices, faces, subdivisionFactor);
+    return new Mesh(vertices, sortedFaces);
 }
 
-const subdivisionFactor = 6;
-const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces, subdivisionFactor);
-const cube = new Mesh(rawCubeVertices, rawCubeFaces, subdivisionFactor);
-const octahedron = new Mesh(rawOctahedronVertices, rawOctahedronFaces, subdivisionFactor);
-const dodecahedron = dualMesh(rawIcosahedronVertices, rawIcosahedronFaces, subdivisionFactor);
-const icosahedron = new Mesh(rawIcosahedronVertices, rawIcosahedronFaces, subdivisionFactor);
+const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces);
+const cube = new Mesh(rawCubeVertices, rawCubeFaces);
+const octahedron = new Mesh(rawOctahedronVertices, rawOctahedronFaces);
+const dodecahedron = dualMesh(rawIcosahedronVertices, rawIcosahedronFaces);
+const icosahedron = new Mesh(rawIcosahedronVertices, rawIcosahedronFaces);
 
 export const meshes: Record<string, Mesh> = {
     tetrahedron: tetrahedron,

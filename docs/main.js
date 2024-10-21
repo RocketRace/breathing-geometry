@@ -52,7 +52,6 @@ const programInfo = {
 const selectMesh = (shape) => {
     mesh = meshes[shape];
     buffers = initBuffers(gl, mesh);
-    spherificationOffset = timer;
     return [mesh, buffers];
 };
 const shape = document.querySelector("#shape") ?? panic("ui broken");
@@ -62,9 +61,8 @@ shape.addEventListener("change", event => {
     }
 });
 const radPerSecond = 0.5;
-const breathSpeed = 1.5;
+const breathSpeed = 1;
 let rotation = 0.0;
-let spherificationOffset = 0.0;
 let timer = 0;
 let mesh;
 let buffers;
@@ -78,7 +76,7 @@ const render = (nowMillis) => {
     timer = nowMillis * 0.001;
     const deltaTime = timer - lastFrame;
     lastFrame = timer;
-    const factor = (Math.sin((timer - spherificationOffset) * breathSpeed) + 1) / 2;
+    const factor = (Math.sin(timer * breathSpeed) + 1) / 2;
     mesh.spherify(factor);
     updateBuffers(gl, mesh, buffers);
     rotation += deltaTime * radPerSecond;
