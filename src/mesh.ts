@@ -33,41 +33,20 @@ const rawCubeFaces = [
     [4, 5, 7, 6] as const,
 ];
 
-const rawOctahedronVertices = [
-    [1, 0, 0] as const,
-    [0, 1, 0] as const,
-    [0, 0, 1] as const,
-    [-1, 0, 0] as const,
-    [0, -1, 0] as const,
-    [0, 0, -1] as const,
-];
-
-const rawOctahedronFaces = [
-    [0, 1, 2] as const,
-    [0, 1, 5] as const,
-    [0, 4, 2] as const,
-    [0, 4, 5] as const,
-    [3, 1, 2] as const,
-    [3, 1, 5] as const,
-    [3, 4, 2] as const,
-    [3, 4, 5] as const,
-];
-
-const a = 1;
 const b = 2 / (1 + Math.sqrt(5));
 const rawIcosahedronVertices = [
-    [0, b, -a] as const,
-    [b, a, 0] as const,
-    [-b, a, 0] as const,
-    [0, b, a] as const,
-    [0, -b, a] as const,
-    [-a, 0, b] as const,
-    [0, -b, -a] as const,
-    [a, 0, -b] as const,
-    [a, 0, b] as const,
-    [-a, 0, -b] as const,
-    [b, -a, 0] as const,
-    [-b, -a, 0] as const,
+    [0, b, -1] as const,
+    [b, 1, 0] as const,
+    [-b, 1, 0] as const,
+    [0, b, 1] as const,
+    [0, -b, 1] as const,
+    [-1, 0, b] as const,
+    [0, -b, -1] as const,
+    [1, 0, -b] as const,
+    [1, 0, b] as const,
+    [-1, 0, -b] as const,
+    [b, -1, 0] as const,
+    [-b, -1, 0] as const,
 ];
 
 const rawIcosahedronFaces = [
@@ -318,7 +297,7 @@ const dualMesh = (originalVertices: Vertex[], originalFaces: Face[]): Mesh => {
 
 const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces);
 const cube = new Mesh(rawCubeVertices, rawCubeFaces);
-const octahedron = new Mesh(rawOctahedronVertices, rawOctahedronFaces);
+const octahedron = dualMesh(rawCubeVertices, rawCubeFaces);
 const dodecahedron = dualMesh(rawIcosahedronVertices, rawIcosahedronFaces);
 const icosahedron = new Mesh(rawIcosahedronVertices, rawIcosahedronFaces);
 

@@ -29,39 +29,20 @@ const rawCubeFaces = [
     [2, 3, 7, 6],
     [4, 5, 7, 6],
 ];
-const rawOctahedronVertices = [
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 0, 1],
-    [-1, 0, 0],
-    [0, -1, 0],
-    [0, 0, -1],
-];
-const rawOctahedronFaces = [
-    [0, 1, 2],
-    [0, 1, 5],
-    [0, 4, 2],
-    [0, 4, 5],
-    [3, 1, 2],
-    [3, 1, 5],
-    [3, 4, 2],
-    [3, 4, 5],
-];
-const a = 1;
 const b = 2 / (1 + Math.sqrt(5));
 const rawIcosahedronVertices = [
-    [0, b, -a],
-    [b, a, 0],
-    [-b, a, 0],
-    [0, b, a],
-    [0, -b, a],
-    [-a, 0, b],
-    [0, -b, -a],
-    [a, 0, -b],
-    [a, 0, b],
-    [-a, 0, -b],
-    [b, -a, 0],
-    [-b, -a, 0],
+    [0, b, -1],
+    [b, 1, 0],
+    [-b, 1, 0],
+    [0, b, 1],
+    [0, -b, 1],
+    [-1, 0, b],
+    [0, -b, -1],
+    [1, 0, -b],
+    [1, 0, b],
+    [-1, 0, -b],
+    [b, -1, 0],
+    [-b, -1, 0],
 ];
 const rawIcosahedronFaces = [
     [2, 1, 0],
@@ -281,7 +262,7 @@ const dualMesh = (originalVertices, originalFaces) => {
 };
 const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces);
 const cube = new Mesh(rawCubeVertices, rawCubeFaces);
-const octahedron = new Mesh(rawOctahedronVertices, rawOctahedronFaces);
+const octahedron = dualMesh(rawCubeVertices, rawCubeFaces);
 const dodecahedron = dualMesh(rawIcosahedronVertices, rawIcosahedronFaces);
 const icosahedron = new Mesh(rawIcosahedronVertices, rawIcosahedronFaces);
 export const meshes = {
