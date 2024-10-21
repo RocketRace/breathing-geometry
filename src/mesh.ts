@@ -231,3 +231,9 @@ const subdivisionFactor = 8;
 export const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces, subdivisionFactor);
 export const cube = new Mesh(rawCubeVertices, rawCubeFaces, subdivisionFactor);
 export const octahedron = new Mesh(rawOctahedronVertices, rawOctahedronFaces, subdivisionFactor);
+
+export const meshes: Record<string, Mesh> = {
+    tetrahedron: tetrahedron,
+    cube: cube,
+    octahedron: octahedron
+};

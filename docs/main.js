@@ -1,6 +1,6 @@
 import { initBuffers, updateBuffers } from "./buffer.js";
 import { drawScene } from "./draw.js";
-import { octahedron } from "./mesh.js";
+import { meshes } from "./mesh.js";
 // JS utilities
 const panic = (msg) => {
     alert(msg);
@@ -49,21 +49,34 @@ const programInfo = {
         normalMatrix: gl.getUniformLocation(program, "uNormalMatrix"),
     },
 };
-let mesh = octahedron;
-const buffers = initBuffers(gl, mesh);
+const selectMesh = (shape) => {
+    mesh = meshes[shape];
+    buffers = initBuffers(gl, mesh);
+    spherificationOffset = timer;
+};
+const shape = document.querySelector("#shape") ?? panic("ui broken");
+shape.addEventListener("change", event => {
+    if (event.target instanceof HTMLInputElement) {
+        selectMesh(event.target.value);
+    }
+});
 const radPerSecond = 0.5;
+const breathSpeed = 1.5;
+let mesh = meshes.tetrahedron;
+let buffers = initBuffers(gl, mesh);
 let rotation = 0.0;
+let spherificationOffset = 0.0;
+let timer = 0;
 let lastFrame = 0;
-// Draw the scene repeatedly
 const render = (nowMillis) => {
-    const now = nowMillis * 0.001;
-    const deltaTime = now - lastFrame;
-    lastFrame = now;
-    const factor = (Math.sin(now * 1.5) + 1) / 2;
+    timer = nowMillis * 0.001;
+    const deltaTime = timer - lastFrame;
+    lastFrame = timer;
+    const factor = (Math.sin((timer - spherificationOffset) * breathSpeed) + 1) / 2;
     mesh.spherify(factor);
     updateBuffers(gl, mesh, buffers);
-    drawScene(gl, programInfo, buffers, rotation);
     rotation += deltaTime * radPerSecond;
+    drawScene(gl, programInfo, buffers, rotation);
     requestAnimationFrame(render);
 };
 requestAnimationFrame(render);
