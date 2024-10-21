@@ -18,8 +18,8 @@ A breathing exercise with regular polyhedra and their spherical geometries.
     - [x] tetrahedron
     - [x] octahedron
     - [x] cube
-    - [ ] dodecahedron
-    - [ ] icosahedron
+    - [x] dodecahedron
+    - [x] icosahedron
     - [ ] more?
 - [x] basic ts config setup
 - [x] basic github pages setup
