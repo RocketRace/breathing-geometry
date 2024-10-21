@@ -53,6 +53,7 @@ const selectMesh = (shape) => {
     mesh = meshes[shape];
     buffers = initBuffers(gl, mesh);
     spherificationOffset = timer;
+    return [mesh, buffers];
 };
 const shape = document.querySelector("#shape") ?? panic("ui broken");
 shape.addEventListener("change", event => {
@@ -62,11 +63,16 @@ shape.addEventListener("change", event => {
 });
 const radPerSecond = 0.5;
 const breathSpeed = 1.5;
-let mesh = meshes.tetrahedron;
-let buffers = initBuffers(gl, mesh);
 let rotation = 0.0;
 let spherificationOffset = 0.0;
 let timer = 0;
+let mesh;
+let buffers;
+[mesh, buffers] = selectMesh(
+// The browser can persist selections
+document.querySelector('input[name="shape"]:checked')
+    ?.value
+    ?? "tetrahedron");
 let lastFrame = 0;
 const render = (nowMillis) => {
     timer = nowMillis * 0.001;

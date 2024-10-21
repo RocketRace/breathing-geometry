@@ -1,6 +1,6 @@
 import { initBuffers, updateBuffers } from "./buffer.js";
 import { drawScene } from "./draw.js";
-import { meshes } from "./mesh.js";
+import { Mesh, meshes } from "./mesh.js";
 
 // JS utilities
 const panic = (msg: string) => {
@@ -60,10 +60,11 @@ const programInfo = {
     },
 };
 
-const selectMesh = (shape: string) => {
+const selectMesh = (shape: string): [Mesh, any] => {
     mesh = meshes[shape];
     buffers = initBuffers(gl, mesh);
     spherificationOffset = timer;
+    return [mesh, buffers];
 }
 
 const shape: HTMLFieldSetElement = document.querySelector("#shape") ?? panic("ui broken");
@@ -76,12 +77,19 @@ shape.addEventListener("change", event => {
 const radPerSecond = 0.5;
 const breathSpeed = 1.5;
 
-let mesh = meshes.tetrahedron;
-let buffers = initBuffers(gl, mesh);
 let rotation = 0.0;
 let spherificationOffset = 0.0;
-
 let timer = 0;
+
+let mesh: Mesh;
+let buffers: any;
+[mesh, buffers] = selectMesh(
+    // The browser can persist selections
+    document.querySelector<HTMLInputElement>('input[name="shape"]:checked')
+        ?.value 
+        ?? "tetrahedron"
+);
+
 let lastFrame = 0;
 const render = (nowMillis: number) => {
     timer = nowMillis * 0.001;

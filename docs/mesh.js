@@ -47,6 +47,44 @@ const rawOctahedronFaces = [
     [3, 4, 2],
     [3, 4, 5],
 ];
+const a = 1;
+const b = 2 / (1 + Math.sqrt(5));
+const rawIcosahedronVertices = [
+    [0, b, -a],
+    [b, a, 0],
+    [-b, a, 0],
+    [0, b, a],
+    [0, -b, a],
+    [-a, 0, b],
+    [0, -b, -a],
+    [a, 0, -b],
+    [a, 0, b],
+    [-a, 0, -b],
+    [b, -a, 0],
+    [-b, -a, 0],
+];
+const rawIcosahedronFaces = [
+    [2, 1, 0],
+    [1, 2, 3],
+    [5, 4, 3],
+    [4, 8, 3],
+    [7, 6, 0],
+    [6, 9, 0],
+    [11, 10, 4],
+    [10, 11, 6],
+    [9, 5, 2],
+    [5, 9, 11],
+    [8, 7, 1],
+    [7, 8, 10],
+    [2, 5, 3],
+    [8, 1, 3],
+    [9, 2, 0],
+    [1, 7, 0],
+    [11, 9, 6],
+    [7, 10, 6],
+    [5, 11, 4],
+    [10, 8, 4],
+];
 const scaleVertices = (vertices) => {
     let max = 0;
     vertices.forEach(vertex => {
@@ -195,12 +233,35 @@ export class Mesh {
         this.recomputeNormals();
     }
 }
-const subdivisionFactor = 8;
-export const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces, subdivisionFactor);
-export const cube = new Mesh(rawCubeVertices, rawCubeFaces, subdivisionFactor);
-export const octahedron = new Mesh(rawOctahedronVertices, rawOctahedronFaces, subdivisionFactor);
+const dualMesh = (originalVertices, originalFaces, subdivisionFactor) => {
+    const scaledVertices = scaleVertices(originalVertices);
+    let vertices = [];
+    let faces = [];
+    originalFaces.forEach(face => {
+        const newVertex = faceCenter(face, scaledVertices);
+        vertices.push(newVertex);
+    });
+    originalVertices.forEach((_, vi) => {
+        let newFace = [];
+        originalFaces.forEach((face, fi) => {
+            if (face.includes(vi)) {
+                newFace.push(fi);
+            }
+        });
+        faces.push([...newFace]);
+    });
+    return new Mesh(vertices, faces, subdivisionFactor);
+};
+const subdivisionFactor = 6;
+const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces, subdivisionFactor);
+const cube = new Mesh(rawCubeVertices, rawCubeFaces, subdivisionFactor);
+const octahedron = new Mesh(rawOctahedronVertices, rawOctahedronFaces, subdivisionFactor);
+const dodecahedron = dualMesh(rawIcosahedronVertices, rawIcosahedronFaces, subdivisionFactor);
+const icosahedron = new Mesh(rawIcosahedronVertices, rawIcosahedronFaces, subdivisionFactor);
 export const meshes = {
     tetrahedron: tetrahedron,
     cube: cube,
-    octahedron: octahedron
+    octahedron: octahedron,
+    dodecahedron: dodecahedron,
+    icosahedron: icosahedron,
 };

@@ -1,8 +1,8 @@
 // "raw" meshes (not normalized / centered at the origin)
 const rawTetrahedronVertices = [
-    [Math.sqrt(8/9), 0, -1/3] as const,
-    [-Math.sqrt(2/9), Math.sqrt(2/3), -1/3] as const,
-    [-Math.sqrt(2/9), -Math.sqrt(2/3), -1/3] as const,
+    [Math.sqrt(8 / 9), 0, -1 / 3] as const,
+    [-Math.sqrt(2 / 9), Math.sqrt(2 / 3), -1 / 3] as const,
+    [-Math.sqrt(2 / 9), -Math.sqrt(2 / 3), -1 / 3] as const,
     [0, 0, 1] as const,
 ];
 
@@ -51,6 +51,46 @@ const rawOctahedronFaces = [
     [3, 1, 5] as const,
     [3, 4, 2] as const,
     [3, 4, 5] as const,
+];
+
+const a = 1;
+const b = 2 / (1 + Math.sqrt(5));
+const rawIcosahedronVertices = [
+    [0, b, -a] as const,
+    [b, a, 0] as const,
+    [-b, a, 0] as const,
+    [0, b, a] as const,
+    [0, -b, a] as const,
+    [-a, 0, b] as const,
+    [0, -b, -a] as const,
+    [a, 0, -b] as const,
+    [a, 0, b] as const,
+    [-a, 0, -b] as const,
+    [b, -a, 0] as const,
+    [-b, -a, 0] as const,
+];
+
+const rawIcosahedronFaces = [
+    [2, 1, 0] as const,
+    [1, 2, 3] as const,
+    [5, 4, 3] as const,
+    [4, 8, 3] as const,
+    [7, 6, 0] as const,
+    [6, 9, 0] as const,
+    [11, 10, 4] as const,
+    [10, 11, 6] as const,
+    [9, 5, 2] as const,
+    [5, 9, 11] as const,
+    [8, 7, 1] as const,
+    [7, 8, 10] as const,
+    [2, 5, 3] as const,
+    [8, 1, 3] as const,
+    [9, 2, 0] as const,
+    [1, 7, 0] as const,
+    [11, 9, 6] as const,
+    [7, 10, 6] as const,
+    [5, 11, 4] as const,
+    [10, 8, 4] as const,
 ];
 
 type Vertex = readonly [number, number, number];
@@ -227,13 +267,38 @@ export class Mesh {
     }
 }
 
-const subdivisionFactor = 8;
-export const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces, subdivisionFactor);
-export const cube = new Mesh(rawCubeVertices, rawCubeFaces, subdivisionFactor);
-export const octahedron = new Mesh(rawOctahedronVertices, rawOctahedronFaces, subdivisionFactor);
+const dualMesh = (originalVertices: Vertex[], originalFaces: Face[], subdivisionFactor: number): Mesh => {
+    const scaledVertices = scaleVertices(originalVertices);
+    let vertices: Vertex[] = [];
+    let faces: Face[] = [];
+    originalFaces.forEach(face => {
+        const newVertex = faceCenter(face, scaledVertices);
+        vertices.push(newVertex);
+    });
+    originalVertices.forEach((_, vi) => {
+        let newFace: number[] = [];
+        originalFaces.forEach((face, fi) => {
+            if (face.includes(vi)) {
+                newFace.push(fi);
+            }
+        })
+        faces.push([...newFace]);
+    });
+
+    return new Mesh(vertices, faces, subdivisionFactor);
+}
+
+const subdivisionFactor = 6;
+const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces, subdivisionFactor);
+const cube = new Mesh(rawCubeVertices, rawCubeFaces, subdivisionFactor);
+const octahedron = new Mesh(rawOctahedronVertices, rawOctahedronFaces, subdivisionFactor);
+const dodecahedron = dualMesh(rawIcosahedronVertices, rawIcosahedronFaces, subdivisionFactor);
+const icosahedron = new Mesh(rawIcosahedronVertices, rawIcosahedronFaces, subdivisionFactor);
 
 export const meshes: Record<string, Mesh> = {
     tetrahedron: tetrahedron,
     cube: cube,
-    octahedron: octahedron
+    octahedron: octahedron,
+    dodecahedron: dodecahedron,
+    icosahedron: icosahedron,
 };
