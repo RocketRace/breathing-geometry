@@ -62,7 +62,7 @@ shape.addEventListener("change", event => {
 });
 const radPerSecond = 0.5;
 const breathSpeed = 1;
-let rotation = 0.0;
+let rotation = 0;
 let timer = 0;
 let mesh;
 let buffers;

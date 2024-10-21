@@ -1,9 +1,9 @@
 // "raw" meshes (not normalized / centered at the origin)
 const rawTetrahedronVertices = [
-    [Math.sqrt(8 / 9), 0, -1 / 3],
-    [-Math.sqrt(2 / 9), Math.sqrt(2 / 3), -1 / 3],
-    [-Math.sqrt(2 / 9), -Math.sqrt(2 / 3), -1 / 3],
-    [0, 0, 1],
+    [Math.sqrt(8 / 9), -1 / 3, 0],
+    [-Math.sqrt(2 / 9), -1 / 3, Math.sqrt(2 / 3)],
+    [-Math.sqrt(2 / 9), -1 / 3, -Math.sqrt(2 / 3)],
+    [0, 1, 0],
 ];
 const rawTetrahedronFaces = [
     [0, 1, 2],

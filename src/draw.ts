@@ -2,8 +2,8 @@ import { mat4 } from "gl-matrix";
 
 export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: any, rotation: number) => {
     // configure clear options and how depth is calculated
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    gl.clearDepth(1.0);
+    gl.clearColor(0, 0, 0, 1);
+    gl.clearDepth(1);
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
 
@@ -15,35 +15,23 @@ export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: 
     const fieldOfView = (45 * Math.PI) / 180;
     const canvas = gl.canvas as HTMLCanvasElement;
     const aspectRatio = canvas.clientWidth / canvas.clientHeight;
-    const zRange = [0.1, 100.0] as const;
+    const zRange = [0.1, 100] as const;
     const projectionMatrix = mat4.create();
     // first argument is destination
     mat4.perspective(projectionMatrix, fieldOfView, aspectRatio, ...zRange);
 
-    // place the cube 3 units away and rotated around the z-axis
+    // place the mesh 3 units away and rotate it around the y-axis
     const modelViewMatrix = mat4.create();
     mat4.translate(
         modelViewMatrix,
         modelViewMatrix,
-        [0.0, 0.0, -3.0],
+        [0, 0, -3],
     );
     mat4.rotate(
-        modelViewMatrix, // destination matrix
-        modelViewMatrix, // matrix to rotate
-        rotation * 0.7, // amount to rotate in radians
+        modelViewMatrix,
+        modelViewMatrix,
+        rotation,
         [0, 1, 0],
-    );
-    mat4.rotate(
-        modelViewMatrix, // destination matrix
-        modelViewMatrix, // matrix to rotate
-        rotation * 0.3, // amount to rotate in radians
-        [1, 0, 0],
-    );
-    mat4.rotate(
-        modelViewMatrix, // destination matrix
-        modelViewMatrix, // matrix to rotate
-        rotation * 0.5, // amount to rotate in radians
-        [0, 0, 1],
     );
     const normalMatrix = mat4.create();
     mat4.invert(normalMatrix, modelViewMatrix);
