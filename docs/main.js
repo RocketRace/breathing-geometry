@@ -93,13 +93,25 @@ const awake = () => {
     const header = document.querySelector("header");
     header?.classList.remove("asleep");
     document.body.classList.remove("asleep");
+    document.title = "Breathing Geometry";
     waiter = setTimeout(() => {
         header?.classList.add("asleep");
         document.body.classList.add("asleep");
+        // Nesting for the cute animation :)
+        waiter = setTimeout(() => {
+            document.title = "Breathing Geometry (z)";
+            waiter = setTimeout(() => {
+                document.title = "Breathing Geometry (zz)";
+                waiter = setTimeout(() => {
+                    document.title = "Breathing Geometry (zzz)";
+                }, 3000);
+            }, 3000);
+        }, 3000);
     }, 20000);
 };
-// Wake on mouse, keyboard, or focus actions
+// Awake on load, mouse, keyboard, or focus actions
 document.addEventListener("mousemove", awake);
 document.addEventListener("keydown", awake);
 document.addEventListener("keyup", awake);
 document.addEventListener("focus", awake);
+awake();
