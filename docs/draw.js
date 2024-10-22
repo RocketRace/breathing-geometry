@@ -1,7 +1,7 @@
 import { mat4 } from "gl-matrix";
 export const drawScene = (gl, programInfo, buffers, rotation) => {
     // configure clear options and how depth is calculated
-    gl.clearColor(0, 0, 0, 1);
+    gl.clearColor(0, 0, 0, 0);
     gl.clearDepth(1);
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
@@ -50,17 +50,6 @@ const setPositionAttribute = (gl, buffers, programInfo) => {
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
     gl.vertexAttribPointer(programInfo.attribLocations.vertexPosition, numComponents, type, normalize, stride, offset);
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition);
-};
-// how to compute vertexColor from the buffers given
-const setColorAttribute = (gl, buffers, programInfo) => {
-    const numComponents = 4; // RGBA
-    const type = gl.FLOAT;
-    const normalize = false;
-    const stride = 0;
-    const offset = 0;
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.color);
-    gl.vertexAttribPointer(programInfo.attribLocations.vertexColor, numComponents, type, normalize, stride, offset);
-    gl.enableVertexAttribArray(programInfo.attribLocations.vertexColor);
 };
 // Tell WebGL how to pull out the normals from
 // the normal buffer into the vertexNormal attribute.
