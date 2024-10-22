@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Breathing Geometry</title>
+    <link rel="stylesheet" href="/style.css"/>
     <!-- Matrix operations for WebGL, since that's not built-in.
      Import maps are baseline since 2023, which is fine for this
      because the page uses a lot of recent-ish features anyway. -->
@@ -51,33 +52,37 @@
     <script src="./main.js" type="module"></script>
 </head>
 <body>
-    <h1>Breathing Geometry</h1>
-    <fieldset id="shape">
-        <legend>Select the shape</legend>
-        <span>
-            <input type="radio" name="shape" value="tetrahedron" id="tetrahedron" checked/>
-            <label for="tetrahedron">Tetrahedron</label>
-        </span>
-        <span>
-            <input type="radio" name="shape" value="cube" id="cube"/>
-            <label for="cube">Cube</label>
-        </span>
-        <span>
-            <input type="radio" name="shape" value="octahedron" id="octahedron"/>
-            <label for="octahedron">Octahedron</label>
-        </span>
-        <span>
-            <input type="radio" name="shape" value="dodecahedron" id="dodecahedron"/>
-            <label for="dodecahedron">Dodecahedron</label>
-        </span>
-        <span>
-            <input type="radio" name="shape" value="icosahedron" id="icosahedron"/>
-            <label for="icosahedron">Icosahedron</label>
-        </span>
-    </fieldset>
-    <canvas id="canvas" width="640" height="480">
-        This page requires WebGL canvas to be enabled.
-    </canvas>
-    <noscript>This page requires JavaScript to be enabled.</noscript>
+    <main>
+        <noscript>This page requires JavaScript to be enabled.</noscript>
+        <header>
+            <h1>Breathing Geometry</h1>
+            <fieldset id="shape">
+                <legend>Select the shape</legend>
+                <span>
+                    <input type="radio" name="shape" value="tetrahedron" id="tetrahedron" checked/>
+                    <label for="tetrahedron">Tetrahedron</label>
+                </span>
+                <span>
+                    <input type="radio" name="shape" value="cube" id="cube"/>
+                    <label for="cube">Cube</label>
+                </span>
+                <span>
+                    <input type="radio" name="shape" value="octahedron" id="octahedron"/>
+                    <label for="octahedron">Octahedron</label>
+                </span>
+                <span>
+                    <input type="radio" name="shape" value="dodecahedron" id="dodecahedron"/>
+                    <label for="dodecahedron">Dodecahedron</label>
+                </span>
+                <span>
+                    <input type="radio" name="shape" value="icosahedron" id="icosahedron"/>
+                    <label for="icosahedron">Icosahedron</label>
+                </span>
+            </fieldset>
+        </header>
+        <canvas id="canvas" width="640" height="480">
+            This page requires WebGL canvas to be enabled.
+        </canvas>
+    </main>
 </body>
 </html>
