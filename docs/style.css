@@ -18,3 +18,15 @@ header {
 canvas {
     padding: inherit;
 }
+
+legend, label {
+    font-family: "Farro", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: small;
+}
+
+h1 {
+    font-family: "Farro", sans-serif;
+    font-weight: 400;
+}
