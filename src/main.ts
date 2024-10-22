@@ -79,14 +79,14 @@ let buffers: any;
 [mesh, buffers] = selectMesh(
     // The browser can persist selections
     document.querySelector<HTMLInputElement>('input[name="shape"]:checked')
-    ?.value 
+        ?.value
     ?? "tetrahedron"
 );
 
 const secondsPerCycle = 16;
 const breathSpeed = 1;
 
-const breathe = (time: number) => 
+const breathe = (time: number) =>
     (Math.sin(time * breathSpeed) + 1) / 2;
 
 let rotation = 0;
@@ -101,9 +101,29 @@ const render = (nowMillis: number) => {
     mesh.spherify(breath);
     updateBuffers(gl, mesh, buffers);
     rotation += deltaTime / secondsPerCycle * 2 * Math.PI;
-    
+
     drawScene(gl, programInfo, buffers, rotation, bob);
 
     requestAnimationFrame(render);
 }
 requestAnimationFrame(render);
+
+let waiter: number | null = null;
+const awake = () => {
+    if (waiter !== null) {
+        clearTimeout(waiter);
+    }
+    const header = document.querySelector<HTMLElement>("header");
+    header?.classList.remove("asleep");
+    document.body.classList.remove("asleep");
+    waiter = setTimeout(() => {
+        header?.classList.add("asleep");
+        document.body.classList.add("asleep");
+    }, 20_000);
+}
+
+// Wake on mouse, keyboard, or focus actions
+document.addEventListener("mousemove", awake);
+document.addEventListener("keydown", awake);
+document.addEventListener("keyup", awake);
+document.addEventListener("focus", awake);

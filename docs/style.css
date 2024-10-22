@@ -1,5 +1,6 @@
 body {
     height: 100vh;
+    margin: 0;
 }
 
 main {
@@ -19,7 +20,8 @@ canvas {
     padding: inherit;
 }
 
-legend, label {
+legend,
+label {
     font-family: "Farro", sans-serif;
     font-weight: 300;
     font-style: normal;
@@ -29,4 +31,40 @@ legend, label {
 h1 {
     font-family: "Farro", sans-serif;
     font-weight: 400;
+}
+
+header.asleep {
+    animation: sleep 10s ease-in-out forwards;
+}
+
+header:not(.asleep) {
+    animation: wake 0.1s ease-in-out forwards;
+}
+
+body.asleep * {
+    cursor: none;
+}
+
+@keyframes sleep {
+    from {
+        opacity: 1;
+        display: auto;
+    }
+
+    to {
+        opacity: 0;
+        display: none;
+    }
+}
+
+@keyframes wake {
+    from {
+        opacity: 0;
+        display: none;
+    }
+
+    to {
+        opacity: 1;
+        display: auto;
+    }
 }

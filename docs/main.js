@@ -85,3 +85,21 @@ const render = (nowMillis) => {
     requestAnimationFrame(render);
 };
 requestAnimationFrame(render);
+let waiter = null;
+const awake = () => {
+    if (waiter !== null) {
+        clearTimeout(waiter);
+    }
+    const header = document.querySelector("header");
+    header?.classList.remove("asleep");
+    document.body.classList.remove("asleep");
+    waiter = setTimeout(() => {
+        header?.classList.add("asleep");
+        document.body.classList.add("asleep");
+    }, 20000);
+};
+// Wake on mouse, keyboard, or focus actions
+document.addEventListener("mousemove", awake);
+document.addEventListener("keydown", awake);
+document.addEventListener("keyup", awake);
+document.addEventListener("focus", awake);
