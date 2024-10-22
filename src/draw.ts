@@ -30,6 +30,12 @@ export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: 
     mat4.rotate(
         modelViewMatrix,
         modelViewMatrix,
+        Math.PI / 12,
+        [1, 0, 0],
+    );
+    mat4.rotate(
+        modelViewMatrix,
+        modelViewMatrix,
         rotation,
         [0, 1, 0],
     );
