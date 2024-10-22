@@ -1,6 +1,12 @@
 import { mat4 } from "gl-matrix";
 
-export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: any, rotation: number) => {
+export const drawScene = (
+    gl: WebGLRenderingContext,
+    programInfo: any,
+    buffers: any,
+    rotation: number,
+    bob: number
+) => {
     // configure clear options and how depth is calculated
     gl.clearColor(0, 0, 0, 0);
     gl.clearDepth(1);
@@ -25,7 +31,7 @@ export const drawScene = (gl: WebGLRenderingContext, programInfo: any, buffers: 
     mat4.translate(
         modelViewMatrix,
         modelViewMatrix,
-        [0, 0, -3],
+        [0, bob - 0.1, -3],
     );
     mat4.rotate(
         modelViewMatrix,

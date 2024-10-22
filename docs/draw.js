@@ -1,5 +1,5 @@
 import { mat4 } from "gl-matrix";
-export const drawScene = (gl, programInfo, buffers, rotation) => {
+export const drawScene = (gl, programInfo, buffers, rotation, bob) => {
     // configure clear options and how depth is calculated
     gl.clearColor(0, 0, 0, 0);
     gl.clearDepth(1);
@@ -18,7 +18,7 @@ export const drawScene = (gl, programInfo, buffers, rotation) => {
     mat4.perspective(projectionMatrix, fieldOfView, aspectRatio, ...zRange);
     // place the mesh 3 units away and rotate it around the y-axis
     const modelViewMatrix = mat4.create();
-    mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -3]);
+    mat4.translate(modelViewMatrix, modelViewMatrix, [0, bob - 0.1, -3]);
     mat4.rotate(modelViewMatrix, modelViewMatrix, Math.PI / 12, [1, 0, 0]);
     mat4.rotate(modelViewMatrix, modelViewMatrix, rotation, [0, 1, 0]);
     const normalMatrix = mat4.create();

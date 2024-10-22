@@ -73,33 +73,36 @@ shape.addEventListener("change", event => {
     }
 })
 
-const radPerSecond = 0.5;
-const breathSpeed = 1;
-
-let rotation = 0;
-let timer = 0;
 
 let mesh: Mesh;
 let buffers: any;
 [mesh, buffers] = selectMesh(
     // The browser can persist selections
     document.querySelector<HTMLInputElement>('input[name="shape"]:checked')
-        ?.value 
-        ?? "tetrahedron"
+    ?.value 
+    ?? "tetrahedron"
 );
 
+const secondsPerCycle = 16;
+const breathSpeed = 1;
+
+const breathe = (time: number) => 
+    (Math.sin(time * breathSpeed) + 1) / 2;
+
+let rotation = 0;
 let lastFrame = 0;
 const render = (nowMillis: number) => {
-    timer = nowMillis * 0.001;
+    const timer = nowMillis * 0.001;
     const deltaTime = timer - lastFrame;
     lastFrame = timer;
 
-    const factor = (Math.sin(timer * breathSpeed) + 1) / 2;
-    mesh.spherify(factor);
+    const breath = breathe(timer);
+    const bob = breath / 10;
+    mesh.spherify(breath);
     updateBuffers(gl, mesh, buffers);
-    rotation += deltaTime * radPerSecond;
+    rotation += deltaTime / secondsPerCycle * 2 * Math.PI;
     
-    drawScene(gl, programInfo, buffers, rotation);
+    drawScene(gl, programInfo, buffers, rotation, bob);
 
     requestAnimationFrame(render);
 }
