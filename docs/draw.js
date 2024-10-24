@@ -26,8 +26,8 @@ export const drawScene = (gl, programInfo, buffers, rotation, bob) => {
     mat4.transpose(normalMatrix, normalMatrix);
     // tell WebGL how to pull out data from buffers to attributes
     setPositionAttribute(gl, buffers, programInfo);
-    // setColorAttribute(gl, buffers, programInfo);
     setNormalAttribute(gl, buffers, programInfo);
+    setFundamentalDomainAttribute(gl, buffers, programInfo);
     // activate the index buffer (for the drawElements call later)
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
     // Tell WebGL to use our program when drawing
@@ -63,4 +63,15 @@ function setNormalAttribute(gl, buffers, programInfo) {
     gl.bindBuffer(gl.ARRAY_BUFFER, buffers.normals);
     gl.vertexAttribPointer(programInfo.attribLocations.vertexNormal, numComponents, type, normalize, stride, offset);
     gl.enableVertexAttribArray(programInfo.attribLocations.vertexNormal);
+}
+function setFundamentalDomainAttribute(gl, buffers, programInfo) {
+    const numComponents = 1;
+    // attributes can't be bool or int
+    const type = gl.FLOAT;
+    const normalize = false;
+    const stride = 0;
+    const offset = 0;
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffers.fundamentals);
+    gl.vertexAttribPointer(programInfo.attribLocations.vertexFundamental, numComponents, type, normalize, stride, offset);
+    gl.enableVertexAttribArray(programInfo.attribLocations.vertexFundamental);
 }

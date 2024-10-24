@@ -98,7 +98,7 @@ const faceCenter = (face, vertices) => {
     y_a /= face.length;
     z_a /= face.length;
     // center is in the FD if all points are
-    return [x_a, y_a, z_a, false];
+    return [x_a, y_a, z_a, f_a];
 };
 const computeNormal = ([ax, ay, az, af], [bx, by, bz, bf], [cx, cy, cz, cf]) => {
     const [ux, uy, uz] = [bx - ax, by - ay, bz - az];
@@ -287,3 +287,4 @@ export const meshes = {
     icosahedron: icosahedron,
 };
 console.log(tetrahedron.fundamentalDomain.filter(x => x));
+console.log(tetrahedron.fundamentalDomain.filter(x => !x));

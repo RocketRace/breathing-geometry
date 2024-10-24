@@ -52,6 +52,7 @@ const programInfo = {
     attribLocations: {
         vertexPosition: gl.getAttribLocation(program, "aVertexPosition"),
         vertexNormal: gl.getAttribLocation(program, "aVertexNormal"),
+        vertexFundamental: gl.getAttribLocation(program, "aVertexFundamental")
     },
     uniformLocations: {
         projectionMatrix: gl.getUniformLocation(program, "uProjectionMatrix"),

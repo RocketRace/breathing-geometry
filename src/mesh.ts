@@ -110,7 +110,7 @@ const faceCenter = (face: Face, vertices: Vertex[]): Vertex => {
     y_a /= face.length;
     z_a /= face.length;
     // center is in the FD if all points are
-    return [x_a, y_a, z_a, false];
+    return [x_a, y_a, z_a, f_a];
 }
 
 const computeNormal = ([ax, ay, az, af]: Vertex, [bx, by, bz, bf]: Vertex, [cx, cy, cz, cf]: Vertex): Normal => {
@@ -325,3 +325,4 @@ export const meshes: Record<string, Mesh> = {
 };
 
 console.log(tetrahedron.fundamentalDomain.filter(x=>x))
+console.log(tetrahedron.fundamentalDomain.filter(x=>!x))

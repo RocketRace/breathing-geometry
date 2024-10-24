@@ -9,11 +9,15 @@ export const initBuffers = (gl, mesh) => {
     const normalBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.normals), gl.DYNAMIC_DRAW);
+    const fundamentalsBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, fundamentalsBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.fundamentalDomain.map(b => b ? 1 : 0)), gl.STATIC_DRAW);
     return {
         vertexCount: mesh.vertices.length / 3,
         position: positionBuffer,
         indices: indexBuffer,
         normals: normalBuffer,
+        fundamentals: fundamentalsBuffer,
     };
 };
 export const updateBuffers = (gl, mesh, buffers) => {

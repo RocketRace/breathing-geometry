@@ -20,8 +20,8 @@
     </script>
     <script id="vs" type="x-shader/x-vertex">
         attribute vec4 aVertexPosition;
-        attribute vec4 aVertexDomain;
         attribute vec3 aVertexNormal;
+        attribute float aVertexFundamental;
         
         uniform mat4 uNormalMatrix;
         uniform mat4 uModelViewMatrix;
@@ -32,7 +32,9 @@
     
         void main(void) {
             gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-            vColor = vec4(0.521, 0.686, 0.412, 1.0);
+            vec4 fernColor = vec4(0.521, 0.686, 0.412, 1.0);
+            vec4 fundamentalColor = vec4(0.521, 0.686, 0.412, 1.0);
+            vColor = fernColor * (1.0 - aVertexFundamental) + fundamentalColor * (aVertexFundamental);
 
             // Apply lighting effect
             highp vec3 sunlightColor = vec3(1.0, 0.9647, 0.929);
