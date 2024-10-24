@@ -109,9 +109,9 @@ const awake = () => {
         }, 3000);
     }, 20000);
 };
-// Awake on load, mouse, keyboard, or focus actions
+// Awake on load, mouse, keyboard, or touch actions
 document.addEventListener("mousemove", awake);
 document.addEventListener("keydown", awake);
 document.addEventListener("keyup", awake);
-document.addEventListener("focus", awake);
+document.addEventListener("touchstart", awake);
 awake();
