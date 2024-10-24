@@ -4,13 +4,13 @@ A breathing exercise with regular polyhedra and their spherical geometries.
 
 ## Artistic checklist
 
-- [ ] sketch the ideas of the scene
-- [ ] what is the atmosphere?
-- [ ] color palettes, textures
+- [x] sketch the ideas of the scene
+- [x] what is the atmosphere?
+- [x] color palettes, textures
 - [ ] smooth breathing animation
-- [ ] rotation, bobbing, other smooth motions
-- [ ] background image
-- [ ] what is the experience that I want to have?
+- [x] rotation, bobbing, other smooth motions
+- [x] background image
+- [x] what is the experience that I want to have?
 
 ## Technical checklist
 
@@ -30,4 +30,4 @@ A breathing exercise with regular polyhedra and their spherical geometries.
 - [ ] somehow encode the fundamental domains for each mesh
 - [x] timer for animation
 - [x] ui buttons for mesh selection
-- [ ] render transparently on top of a background image
+- [x] render transparently on top of a background image
