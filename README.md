@@ -2,6 +2,8 @@
 
 A breathing exercise with regular polyhedra and their spherical geometries.
 
+When viewing on your phone, please use landscape mode.
+
 ## Artistic checklist
 
 - [x] sketch the ideas of the scene
