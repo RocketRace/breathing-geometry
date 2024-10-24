@@ -7,7 +7,7 @@ A breathing exercise with regular polyhedra and their spherical geometries.
 - [x] sketch the ideas of the scene
 - [x] what is the atmosphere?
 - [x] color palettes, textures
-- [ ] smooth breathing animation
+- [x] smooth breathing animation
 - [x] rotation, bobbing, other smooth motions
 - [x] background image
 - [x] what is the experience that I want to have?
