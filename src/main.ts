@@ -84,6 +84,7 @@ let buffers: any;
 );
 
 // Breathing parameters
+const paused = false;
 const secondsPerCycle = 16;
 const breathSpeed = 0.6;
 const breathCurve = 1.3;
@@ -98,7 +99,7 @@ const breathe = (time: number) => {
 let rotation = 0;
 let lastFrame = 0;
 const render = (nowMillis: number) => {
-    const timer = nowMillis * 0.001;
+    const timer = paused ? 0 : nowMillis * 0.001;
     const deltaTime = timer - lastFrame;
     lastFrame = timer;
 
