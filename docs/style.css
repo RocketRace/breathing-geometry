@@ -1,6 +1,7 @@
 body {
     height: 100vh;
     margin: 0;
+    background-color: #F7FFF5;
 }
 
 main {
@@ -72,5 +73,5 @@ body.asleep * {
 
 fieldset {
     border-radius: 5px;
-    border-color: rgb(133, 175, 105);
+    border-color: #85AF69;
 }
