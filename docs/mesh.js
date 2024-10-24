@@ -69,14 +69,14 @@ const rawIcosahedronFaces = [
 const scaleVertices = (vertices) => {
     let max = 0;
     vertices.forEach(vertex => {
-        const [x, y, z] = vertex;
+        const [x, y, z, _] = vertex;
         const n = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
         max = Math.max(max, n);
     });
     let scaledVertices = [];
     vertices.forEach(vertex => {
-        const [x, y, z] = vertex;
-        scaledVertices.push([x / max, y / max, z / max]);
+        const [x, y, z, f] = vertex;
+        scaledVertices.push([x / max, y / max, z / max, f]);
     });
     return scaledVertices;
 };
@@ -86,18 +86,21 @@ const faceCenter = (face, vertices) => {
     let x_a = 0;
     let y_a = 0;
     let z_a = 0;
+    let f_a = true;
     face.forEach(i => {
-        const [x, y, z] = vertices[i];
+        const [x, y, z, f] = vertices[i];
         x_a += x;
         y_a += y;
         z_a += z;
+        f_a && (f_a = f);
     });
     x_a /= face.length;
     y_a /= face.length;
     z_a /= face.length;
-    return [x_a, y_a, z_a];
+    // center is in the FD if all points are
+    return [x_a, y_a, z_a, false];
 };
-const computeNormal = ([ax, ay, az], [bx, by, bz], [cx, cy, cz]) => {
+const computeNormal = ([ax, ay, az, af], [bx, by, bz, bf], [cx, cy, cz, cf]) => {
     const [ux, uy, uz] = [bx - ax, by - ay, bz - az];
     const [vx, vy, vz] = [cx - ax, cy - ay, cz - az];
     const [nx, ny, nz] = [
@@ -116,7 +119,9 @@ const normalize = ([x, y, z]) => {
     const n = Math.sqrt(x ** 2 + y ** 2 + z ** 2);
     return [x / n, y / n, z / n];
 };
-const halve = ([ax, ay, az], [bx, by, bz]) => [(ax + bx) / 2, (ay + by) / 2, (az + bz) / 2];
+const halve = ([ax, ay, az, af], [bx, by, bz, bf]) => 
+// midpoint is in the FD if both endpoints are
+[(ax + bx) / 2, (ay + by) / 2, (az + bz) / 2, af && bf];
 const lerp = (a, b, factor) => a * (1 - factor) + b * factor;
 export class Mesh {
     constructor(rawVertices, rawFaces) {
@@ -139,8 +144,11 @@ export class Mesh {
             }
         });
         // todo: should the indices be closer together?
-        this.baseVertices = [...vertices.flat()];
-        this.vertices = vertices.flat();
+        const flatVertices = [...vertices.flat().filter(x => typeof x === "number")];
+        const fundamentalDomain = [...vertices.flat().filter(x => typeof x === "boolean")];
+        this.baseVertices = [...flatVertices];
+        this.fundamentalDomain = fundamentalDomain;
+        this.vertices = [...flatVertices];
         this.triangles = triangles.flat();
         this.normals = normals.flat();
         // the maximum amount of subdivisions until we cap out at 65536 vertices
@@ -160,18 +168,21 @@ export class Mesh {
                 this.baseVertices[ia],
                 this.baseVertices[ia + 1],
                 this.baseVertices[ia + 2],
+                this.fundamentalDomain[ia / 3],
             ];
             const ib = this.triangles[i + 1] * 3;
             const b = [
                 this.baseVertices[ib],
                 this.baseVertices[ib + 1],
                 this.baseVertices[ib + 2],
+                this.fundamentalDomain[ib / 3],
             ];
             const ic = this.triangles[i + 2] * 3;
             const c = [
                 this.baseVertices[ic],
                 this.baseVertices[ic + 1],
                 this.baseVertices[ic + 2],
+                this.fundamentalDomain[ic / 3],
             ];
             const n = [
                 this.normals[ia],
@@ -186,8 +197,11 @@ export class Mesh {
             newNormals.push(n, n, n, n, n, n);
             newTriangles.push([index, index + 1, index + 2], [index + 3, index + 4, index + 5]);
         }
-        this.baseVertices = [...newVertices.flat()];
-        this.vertices = newVertices.flat();
+        const flatVertices = [...newVertices.flat().filter(x => typeof x === "number")];
+        const fundamentalDomain = [...newVertices.flat().filter(x => typeof x === "boolean")];
+        this.baseVertices = [...flatVertices];
+        this.vertices = [...flatVertices];
+        this.fundamentalDomain = fundamentalDomain;
         this.triangles = newTriangles.flat();
         this.normals = newNormals.flat();
         this.subdivide(exponent - 1);
@@ -197,7 +211,7 @@ export class Mesh {
             const ia = this.triangles[i] * 3;
             const ib = this.triangles[i + 1] * 3;
             const ic = this.triangles[i + 2] * 3;
-            const [n1, n2, n3] = computeNormal([this.vertices[ia], this.vertices[ia + 1], this.vertices[ia + 2]], [this.vertices[ib], this.vertices[ib + 1], this.vertices[ib + 2]], [this.vertices[ic], this.vertices[ic + 1], this.vertices[ic + 2]]);
+            const [n1, n2, n3] = computeNormal([this.vertices[ia], this.vertices[ia + 1], this.vertices[ia + 2], this.fundamentalDomain[ia / 3]], [this.vertices[ib], this.vertices[ib + 1], this.vertices[ib + 2], this.fundamentalDomain[ib / 3]], [this.vertices[ic], this.vertices[ic + 1], this.vertices[ic + 2], this.fundamentalDomain[ic / 3]]);
             this.normals[ia] = this.normals[ib] = this.normals[ic] = n1;
             this.normals[ia + 1] = this.normals[ib + 1] = this.normals[ic + 1] = n2;
             this.normals[ia + 2] = this.normals[ib + 2] = this.normals[ic + 2] = n3;
@@ -260,11 +274,11 @@ const dualMesh = (originalVertices, originalFaces) => {
     const sortedFaces = faces.map(face => sortFace(face, vertices));
     return new Mesh(vertices, sortedFaces);
 };
-const tetrahedron = new Mesh(rawTetrahedronVertices, rawTetrahedronFaces);
-const cube = new Mesh(rawCubeVertices, rawCubeFaces);
-const octahedron = dualMesh(rawCubeVertices, rawCubeFaces);
-const dodecahedron = dualMesh(rawIcosahedronVertices, rawIcosahedronFaces);
-const icosahedron = new Mesh(rawIcosahedronVertices, rawIcosahedronFaces);
+const tetrahedron = new Mesh(rawTetrahedronVertices.map(x => [...x, true]), rawTetrahedronFaces);
+const cube = new Mesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces);
+const octahedron = dualMesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces);
+const dodecahedron = dualMesh(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces);
+const icosahedron = new Mesh(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces);
 export const meshes = {
     tetrahedron: tetrahedron,
     cube: cube,
@@ -272,3 +286,4 @@ export const meshes = {
     dodecahedron: dodecahedron,
     icosahedron: icosahedron,
 };
+console.log(tetrahedron.fundamentalDomain.filter(x => x));
