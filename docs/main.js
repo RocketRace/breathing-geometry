@@ -69,7 +69,9 @@ document.querySelector('input[name="shape"]:checked')
     ?? "tetrahedron");
 const secondsPerCycle = 16;
 const breathSpeed = 1;
-const breathe = (time) => (Math.sin(time * breathSpeed) + 1) / 2;
+const breathe = (time) => {
+    return (Math.sin(time * breathSpeed - Math.PI / 2) + 1) / 2;
+};
 let rotation = 0;
 let lastFrame = 0;
 const render = (nowMillis) => {

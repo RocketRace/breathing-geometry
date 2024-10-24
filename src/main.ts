@@ -86,8 +86,9 @@ let buffers: any;
 const secondsPerCycle = 16;
 const breathSpeed = 1;
 
-const breathe = (time: number) =>
-    (Math.sin(time * breathSpeed) + 1) / 2;
+const breathe = (time: number) => {
+    return (Math.sin(time * breathSpeed - Math.PI / 2) + 1) / 2;
+}
 
 let rotation = 0;
 let lastFrame = 0;
