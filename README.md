@@ -11,7 +11,7 @@ When viewing on your phone, please use landscape mode.
 - [x] color palettes, textures
 - [x] smooth breathing animation
 - [x] rotation, bobbing, other smooth motions
-- [x] background image
+- [x] ~background image~
 - [x] what is the experience that I want to have?
 
 ## Technical checklist
@@ -29,7 +29,7 @@ When viewing on your phone, please use landscape mode.
 - [x] function to triangulate a mesh to the center of faces
 - [x] function to subdivide triangular faces to a precision N (powers of 2?)
 - [x] function to lerp vertices towards a sphere
-- [ ] somehow encode the fundamental domains for each mesh
+- [x] ~somehow encode the fundamental domains for each mesh~
 - [x] timer for animation
 - [x] ui buttons for mesh selection
-- [x] render transparently on top of a background image
+- [x] ~render transparently on top of a background image~

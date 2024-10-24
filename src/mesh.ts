@@ -323,6 +323,3 @@ export const meshes: Record<string, Mesh> = {
     dodecahedron: dodecahedron,
     icosahedron: icosahedron,
 };
-
-console.log(tetrahedron.fundamentalDomain.filter(x=>x))
-console.log(tetrahedron.fundamentalDomain.filter(x=>!x))

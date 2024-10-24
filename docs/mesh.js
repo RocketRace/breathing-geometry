@@ -286,5 +286,3 @@ export const meshes = {
     dodecahedron: dodecahedron,
     icosahedron: icosahedron,
 };
-console.log(tetrahedron.fundamentalDomain.filter(x => x));
-console.log(tetrahedron.fundamentalDomain.filter(x => !x));
