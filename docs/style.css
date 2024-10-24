@@ -24,13 +24,14 @@ legend,
 label {
     font-family: "Farro", sans-serif;
     font-weight: 300;
-    font-style: normal;
     font-size: small;
+    color: #222222;
 }
 
 h1 {
     font-family: "Farro", sans-serif;
     font-weight: 400;
+    color: #222222;
 }
 
 header.asleep {
@@ -38,7 +39,7 @@ header.asleep {
 }
 
 header:not(.asleep) {
-    animation: wake 0.1s ease-in-out forwards;
+    animation: wake 0.2s ease-in-out forwards;
 }
 
 body.asleep * {
@@ -67,4 +68,9 @@ body.asleep * {
         opacity: 1;
         display: auto;
     }
+}
+
+fieldset {
+    border-radius: 5px;
+    border-color: rgb(133, 175, 105);
 }
