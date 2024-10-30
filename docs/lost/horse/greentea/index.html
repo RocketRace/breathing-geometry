@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Olivia's button</title>
+<!-- using inline styles and scripts because this is a tiny page -->
+<style>
+h1 {
+    font-family: Verdana, sans-serif;
+    color: #222222;
+}
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+</style>
+<script>
+const handler = () => {
+    alert("The assignment has been completed!");
+};
+</script>
+</head>
+<body>
+<main>
+    <h1>Olivia's button</h1>
+    <button type="button" onclick="handler();">Click me</button>
+</main>
+</body>
+</html>
