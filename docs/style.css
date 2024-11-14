@@ -19,6 +19,7 @@ header {
 
 canvas {
     padding: inherit;
+    max-width: 100%;
 }
 
 legend,
