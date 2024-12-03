@@ -1,7 +1,14 @@
+:root {
+    --sunlight: #F7FFF5;
+    --black: #222222;
+    --fern: #85AF69;
+    --faded: #85AF69A0;
+}
+
 body {
     height: 100vh;
     margin: 0;
-    background-color: #F7FFF5;
+    background-color: var(--sunlight);
 }
 
 main {
@@ -23,17 +30,36 @@ canvas {
 }
 
 legend,
-label {
+label, 
+small {
     font-family: "Farro", sans-serif;
     font-weight: 300;
     font-size: small;
-    color: #222222;
+    color: var(--black);
 }
 
 h1 {
     font-family: "Farro", sans-serif;
     font-weight: 400;
-    color: #222222;
+    color: var(--black);
+}
+
+nav {
+    display: grid;
+    width: 100%;
+    grid-template-columns: 0.5fr 2fr 0.5fr;
+    justify-items: center;
+    align-items: baseline;
+}
+
+a {
+    text-decoration: none;
+    color: var(--faded);
+}
+
+a:hover {
+    color: var(--fern);
+    text-decoration: underline 2px var(--fern);
 }
 
 header.asleep {
