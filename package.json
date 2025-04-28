@@ -5,7 +5,8 @@
   "main": "docs/index.html",
   "scripts": {
     "watch": "npx tsc --watch",
-    "local": "python3 -m http.server -d docs"
+    "local": "python3 -m http.server -d docs",
+    "build": "npx tsc"
   },
   "author": "",
   "license": "MPL-2.0",
