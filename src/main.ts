@@ -38,9 +38,18 @@ const createProgram = (vsSource: string, fsSource: string) => {
 
 // Initialize the canvas and context
 const canvas: HTMLCanvasElement = document.querySelector("#canvas")!;
-const gl = canvas?.getContext("webgl") ?? panic(
+const gl = canvas?.getContext("webgl2") ?? canvas?.getContext("webgl") ?? panic(
     "Unable to initialize WebGL. Your browser or machine may not support it."
 );
+// gradual degradation helps
+console.log("Using", gl.getParameter(gl.VERSION))
+if (gl.getParameter(gl.VERSION) == "WebGL 1.0") {
+    if (gl.getExtension("OES_element_index_uint") === null) {
+        panic(
+            "Unable to initialize WebGL. Your browser or machine may not support it, or only supports an old version."
+        );
+    }
+}
 
 const vsSource = document.querySelector("#vs")?.textContent ?? "";
 const fsSource = document.querySelector("#fs")?.textContent ?? "";

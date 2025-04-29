@@ -37,7 +37,7 @@ export const drawScene = (gl, programInfo, buffers, rotation, bob) => {
     gl.uniformMatrix4fv(programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
     gl.uniformMatrix4fv(programInfo.uniformLocations.normalMatrix, false, normalMatrix);
     const vertexCount = buffers.vertexCount;
-    const type = gl.UNSIGNED_SHORT;
+    const type = gl.UNSIGNED_INT;
     const offset = 0;
     gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
 };

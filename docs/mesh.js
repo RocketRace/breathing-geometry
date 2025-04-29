@@ -186,7 +186,8 @@ export class Mesh {
         this.normals = normals.flat();
         // veins are all connected to the origin
         // the maximum amount of subdivisions until we cap out at 65536 vertices
-        const autoSubdivisionFactor = Math.floor(Math.log2((2 ** 16) / this.triangles.length - 2) - 2);
+        // fixme: ^this doesn't actually apply anymore now that there's extra triangles in the fundamental domain!
+        const autoSubdivisionFactor = Math.floor(Math.log2((2 ** 16) / this.triangles.length - 2));
         this.subdivide(autoSubdivisionFactor);
         // time for the the fundamental domain submesh now that the surface is nicely subdivided
         // it's so jank fr

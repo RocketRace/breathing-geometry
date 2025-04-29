@@ -78,7 +78,7 @@ export const drawScene = (
 
 
     const vertexCount = buffers.vertexCount;
-    const type = gl.UNSIGNED_SHORT;
+    const type = gl.UNSIGNED_INT;
     const offset = 0;
     gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
 }
