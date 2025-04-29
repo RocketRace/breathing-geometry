@@ -1,5 +1,5 @@
 {
-  description = "A breathing exercise with regular polyhedra and their spherical geometries.";
+  description = "A breathing exercise with uniform polyhedra and their spherical geometries.";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.flake-utils.url = "github:numtide/flake-utils";

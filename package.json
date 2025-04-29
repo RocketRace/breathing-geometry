@@ -1,7 +1,7 @@
 {
   "name": "breathing-geometry",
   "version": "1.0.0",
-  "description": "A breathing exercise with regular polyhedra and their spherical geometries.",
+  "description": "A breathing exercise with uniform polyhedra and their spherical geometries.",
   "main": "docs/index.html",
   "scripts": {
     "watch": "npx tsc --watch",

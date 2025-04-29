@@ -1,6 +1,6 @@
 # Breathing geometry
 
-A breathing exercise with regular polyhedra and their spherical geometries.
+A breathing exercise with uniform polyhedra and their spherical geometries.
 
 ## Artistic checklist
 
@@ -20,14 +20,14 @@ A breathing exercise with regular polyhedra and their spherical geometries.
     - [x] cube
     - [x] dodecahedron
     - [x] icosahedron
-    - [ ] more?
+    - [x] more!
 - [x] basic ts config setup
 - [x] basic github pages setup
 - [x] basic 3d webgl skeleton
 - [x] function to triangulate a mesh to the center of faces
 - [x] function to subdivide triangular faces to a precision N (powers of 2?)
 - [x] function to lerp vertices towards a sphere
-- [x] ~somehow encode the fundamental domains for each mesh~
+- [x] somehow encode the fundamental domains for each mesh
 - [x] timer for animation
 - [x] ui buttons for mesh selection
 - [x] ~render transparently on top of a background image~
