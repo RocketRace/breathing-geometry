@@ -66,6 +66,21 @@ const rawIcosahedronFaces = [
     [5, 11, 4],
     [10, 8, 4],
 ];
+// I calculated out these indices on paper!
+const rawGreatIcosahedronFaces = [
+    [2, 8, 0, 3, 7],
+    [3, 0, 5, 1, 9],
+    [1, 6, 2, 7, 9],
+    [1, 10, 0, 8, 6],
+    [4, 1, 5, 8, 2],
+    [0, 11, 2, 6, 5],
+    [4, 7, 3, 10, 1],
+    [11, 0, 10, 9, 7],
+    [4, 2, 11, 3, 9],
+    [10, 5, 8, 11, 3],
+    [4, 6, 5, 10, 9],
+    [11, 8, 6, 4, 7],
+];
 const scaleVertices = (vertices) => {
     let max = 0;
     vertices.forEach(vertex => {
@@ -467,7 +482,7 @@ const dualMesh = (originalVertices, originalFaces, withFundamentalDomain) => {
         });
         faces.push([...newFace]);
     });
-    const sortedFaces = faces.map(face => sortFace(face, vertices));
+    let sortedFaces = faces.map(face => sortFace(face, vertices));
     return new Mesh(vertices, sortedFaces, withFundamentalDomain);
 };
 const bothMeshes = (vertices, faces) => ({
@@ -484,10 +499,13 @@ const cube = bothMeshes(rawCubeVertices.map(x => [...x, true]), rawCubeFaces);
 const octahedron = bothDualMeshes(rawCubeVertices.map(x => [...x, true]), rawCubeFaces);
 const dodecahedron = bothDualMeshes(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces);
 const icosahedron = bothMeshes(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces);
+// and the special
+const greatIcosahedron = bothMeshes(rawIcosahedronVertices.map(x => [...x, true]), rawGreatIcosahedronFaces);
 export const meshes = {
     tetrahedron: tetrahedron,
     cube: cube,
     octahedron: octahedron,
     dodecahedron: dodecahedron,
     icosahedron: icosahedron,
+    greatIcosahedron: greatIcosahedron
 };
