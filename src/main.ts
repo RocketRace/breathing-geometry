@@ -113,9 +113,11 @@ const breathCurve = 1.3;
 const bobFactor = 0.1;
 
 const breathe = (time: number) => {
+    // Makes the great dodecahedron look a little nicer as it expands
+    const fudgeFactor = meshName == "greatDodecahedron" ? 0.98 : 1;
     // sin(a * sin(x)) is a nice way to flatten a sine
-    return Math.sin(breathCurve * Math.sin(time * breathSpeed - Math.PI / 2)) / 
-           (2 * Math.sin(breathCurve)) + 0.5;
+    return (Math.sin(breathCurve * Math.sin(time * breathSpeed - Math.PI / 2)) / 
+           (2 * Math.sin(breathCurve)) + 0.5) * fudgeFactor;
 }
 
 let rotation = 0;
