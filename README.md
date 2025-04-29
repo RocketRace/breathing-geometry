@@ -2,7 +2,7 @@
 
 A breathing exercise with uniform polyhedra and their spherical geometries.
 
-## Artistic checklist
+## Checklist
 
 - [x] sketch the ideas of the scene
 - [x] what is the atmosphere?
@@ -11,9 +11,6 @@ A breathing exercise with uniform polyhedra and their spherical geometries.
 - [x] rotation, bobbing, other smooth motions
 - [x] ~background image~
 - [x] what is the experience that I want to have?
-
-## Technical checklist
-
 - Get a mesh for
     - [x] tetrahedron
     - [x] octahedron
