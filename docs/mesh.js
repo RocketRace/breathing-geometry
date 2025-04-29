@@ -478,11 +478,11 @@ const bothDualMeshes = (vertices, faces) => ({
     "true": dualMesh(vertices, faces, true),
     "false": dualMesh(vertices, faces, false),
 });
-const tetrahedron = new Mesh(rawTetrahedronVertices.map(x => [...x, true]), rawTetrahedronFaces, false);
-const cube = new Mesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces, false);
-const octahedron = dualMesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces, false);
-const dodecahedron = dualMesh(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces, false);
-const icosahedron = new Mesh(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces, false);
+const tetrahedron = bothMeshes(rawTetrahedronVertices.map(x => [...x, true]), rawTetrahedronFaces);
+const cube = bothMeshes(rawCubeVertices.map(x => [...x, true]), rawCubeFaces);
+const octahedron = bothDualMeshes(rawCubeVertices.map(x => [...x, true]), rawCubeFaces);
+const dodecahedron = bothDualMeshes(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces);
+const icosahedron = bothMeshes(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces);
 export const meshes = {
     tetrahedron: tetrahedron,
     cube: cube,

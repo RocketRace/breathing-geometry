@@ -53,7 +53,7 @@ const programInfo = {
 const selectMesh = (shape, visible) => {
     meshName = shape ?? meshName;
     domainVisible = visible ?? domainVisible;
-    mesh = meshes[meshName];
+    mesh = meshes[meshName][domainVisible ? "true" : "false"];
     buffers = initBuffers(gl, mesh);
     return [mesh, buffers];
 };
