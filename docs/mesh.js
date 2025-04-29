@@ -149,7 +149,7 @@ const vLerp = ([ax, ay, az, af], [bx, by, bz, bf], factor) => [lerp(ax, bx, fact
 // the "incorrectness" only comes from the unsound introduction of _f field checking,
 // which is correctly pointed out as problematic in halveCorrectly
 export class Mesh {
-    constructor(rawVertices, rawFaces) {
+    constructor(rawVertices, rawFaces, withFundamentalDomain) {
         const scaledVertices = scaleVertices(rawVertices);
         let vertices = [];
         let triangles = [];
@@ -447,7 +447,7 @@ const sortFace = (face, vertices) => {
     }
     return sortedFace;
 };
-const dualMesh = (originalVertices, originalFaces) => {
+const dualMesh = (originalVertices, originalFaces, withFundamentalDomain) => {
     const scaledVertices = scaleVertices(originalVertices);
     let vertices = [];
     let faces = [];
@@ -465,13 +465,13 @@ const dualMesh = (originalVertices, originalFaces) => {
         faces.push([...newFace]);
     });
     const sortedFaces = faces.map(face => sortFace(face, vertices));
-    return new Mesh(vertices, sortedFaces);
+    return new Mesh(vertices, sortedFaces, withFundamentalDomain);
 };
-const tetrahedron = new Mesh(rawTetrahedronVertices.map(x => [...x, true]), rawTetrahedronFaces);
-const cube = new Mesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces);
-const octahedron = dualMesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces);
-const dodecahedron = dualMesh(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces);
-const icosahedron = new Mesh(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces);
+const tetrahedron = new Mesh(rawTetrahedronVertices.map(x => [...x, true]), rawTetrahedronFaces, false);
+const cube = new Mesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces, false);
+const octahedron = dualMesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces, false);
+const dodecahedron = dualMesh(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces, false);
+const icosahedron = new Mesh(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces, false);
 export const meshes = {
     tetrahedron: tetrahedron,
     cube: cube,

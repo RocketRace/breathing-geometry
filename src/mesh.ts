@@ -178,7 +178,7 @@ export class Mesh {
     // string representing stringified vertex pair excluding f field
     // fundamentalEdges: Set<[Vertex, Vertex]>
     fundamentalEdges: Set<string>
-    constructor(rawVertices: Vertex[], rawFaces: Face[]) {
+    constructor(rawVertices: Vertex[], rawFaces: Face[], withFundamentalDomain: boolean) {
         const scaledVertices = scaleVertices(rawVertices);
         let vertices: Vertex[] = [];
         let triangles: Triangle[] = [];
@@ -490,7 +490,7 @@ const sortFace = (face: Face, vertices: Vertex[]): Face => {
     return sortedFace;
 }
 
-const dualMesh = (originalVertices: Vertex[], originalFaces: Face[]): Mesh => {
+const dualMesh = (originalVertices: Vertex[], originalFaces: Face[], withFundamentalDomain: boolean): Mesh => {
     const scaledVertices = scaleVertices(originalVertices);
     let vertices: Vertex[] = [];
     let faces: Face[] = [];
@@ -509,14 +509,14 @@ const dualMesh = (originalVertices: Vertex[], originalFaces: Face[]): Mesh => {
     });
     const sortedFaces = faces.map(face => sortFace(face, vertices));
 
-    return new Mesh(vertices, sortedFaces);
+    return new Mesh(vertices, sortedFaces, withFundamentalDomain);
 }
 
-const tetrahedron = new Mesh(rawTetrahedronVertices.map(x => [...x, true]), rawTetrahedronFaces);
-const cube = new Mesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces);
-const octahedron = dualMesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces);
-const dodecahedron = dualMesh(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces);
-const icosahedron = new Mesh(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces);
+const tetrahedron = new Mesh(rawTetrahedronVertices.map(x => [...x, true]), rawTetrahedronFaces, false);
+const cube = new Mesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces, false);
+const octahedron = dualMesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces, false);
+const dodecahedron = dualMesh(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces, false);
+const icosahedron = new Mesh(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces, false);
 
 export const meshes: Record<string, Mesh> = {
     tetrahedron: tetrahedron,
