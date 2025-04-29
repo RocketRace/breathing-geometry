@@ -102,7 +102,7 @@ const breathe = (time) => {
         (2 * Math.sin(breathCurve)) + 0.5) * fudgeFactor;
 };
 const pulse = (time) => (Math.sin(breathCurve * Math.sin(time * breathSpeed * pulsePerBreath) /
-    (2 * Math.sin(breathCurve))) + 0.5) / 6 + 2 / 3;
+    (2 * Math.sin(breathCurve))) + 0.5) / 7 + 5 / 7;
 let rotation = 0;
 let lastFrame = 0;
 const render = (nowMillis) => {
