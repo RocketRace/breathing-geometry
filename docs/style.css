@@ -106,3 +106,8 @@ fieldset {
 #rightward {
     float: right;
 }
+
+/* Avoid linebreaks between input and label */
+span {
+    display: inline-block;
+}
