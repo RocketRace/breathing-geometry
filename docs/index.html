@@ -36,6 +36,7 @@
         uniform mat4 uNormalMatrix;
         uniform mat4 uModelViewMatrix;
         uniform mat4 uProjectionMatrix;
+        uniform float uPulseStrength;
         
         varying lowp vec4 vColor;
         varying highp vec3 vLighting;
@@ -43,7 +44,7 @@
         void main(void) {
             gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
             vec4 fernColor = vec4(0.521, 0.686, 0.412, 1.0);
-            vec4 fundamentalColor = vec4(fernColor.rgb * 0.9, 1.0);
+            vec4 fundamentalColor = vec4(fernColor.rgb * uPulseStrength, 1.0);
             vColor = fernColor * (1.0 - aVertexFundamental) + fundamentalColor * (aVertexFundamental);
 
             // Apply lighting effect

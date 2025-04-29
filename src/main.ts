@@ -67,6 +67,7 @@ const programInfo = {
         projectionMatrix: gl.getUniformLocation(program, "uProjectionMatrix"),
         modelViewMatrix: gl.getUniformLocation(program, "uModelViewMatrix"),
         normalMatrix: gl.getUniformLocation(program, "uNormalMatrix"),
+        pulseStrength: gl.getUniformLocation(program, "uPulseStrength"),
     },
 };
 
@@ -111,6 +112,7 @@ const secondsPerCycle = 16;
 const breathSpeed = 0.6;
 const breathCurve = 1.3;
 const bobFactor = 0.1;
+const pulsePerBreath = 2.5;
 
 const breathe = (time: number) => {
     // Makes the great dodecahedron look a little nicer as it expands
@@ -119,6 +121,10 @@ const breathe = (time: number) => {
     return (Math.sin(breathCurve * Math.sin(time * breathSpeed - Math.PI / 2)) / 
            (2 * Math.sin(breathCurve)) + 0.5) * fudgeFactor;
 }
+
+const pulse = (time: number) => 
+    (Math.sin(breathCurve * Math.sin(time * breathSpeed * pulsePerBreath) /
+        (2 * Math.sin(breathCurve))) + 0.5) / 6 + 2/3
 
 let rotation = 0;
 let lastFrame = 0;
@@ -129,11 +135,12 @@ const render = (nowMillis: number) => {
 
     const breath = breathe(timer);
     const bob = breath * bobFactor;
+    const pulseStrength = pulse(timer);
     mesh.spherify(breath);
     updateBuffers(gl, mesh, buffers);
     rotation += deltaTime / secondsPerCycle * 2 * Math.PI;
 
-    drawScene(gl, programInfo, buffers, rotation, bob);
+    drawScene(gl, programInfo, buffers, rotation, bob, pulseStrength);
 
     requestAnimationFrame(render);
 }

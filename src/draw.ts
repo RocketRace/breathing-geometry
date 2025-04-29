@@ -5,7 +5,8 @@ export const drawScene = (
     programInfo: any,
     buffers: any,
     rotation: number,
-    bob: number
+    bob: number,
+    pulseStrength: number
 ) => {
     // configure clear options and how depth is calculated
     gl.clearColor(0, 0, 0, 0);
@@ -75,7 +76,10 @@ export const drawScene = (
         false,
         normalMatrix,
     );
-
+    gl.uniform1f(
+        programInfo.uniformLocations.pulseStrength,
+        pulseStrength
+    );
 
     const vertexCount = buffers.vertexCount;
     const type = gl.UNSIGNED_INT;

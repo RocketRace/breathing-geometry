@@ -1,5 +1,5 @@
 import { mat4 } from "gl-matrix";
-export const drawScene = (gl, programInfo, buffers, rotation, bob) => {
+export const drawScene = (gl, programInfo, buffers, rotation, bob, pulseStrength) => {
     // configure clear options and how depth is calculated
     gl.clearColor(0, 0, 0, 0);
     gl.clearDepth(1);
@@ -36,6 +36,7 @@ export const drawScene = (gl, programInfo, buffers, rotation, bob) => {
     gl.uniformMatrix4fv(programInfo.uniformLocations.projectionMatrix, false, projectionMatrix);
     gl.uniformMatrix4fv(programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix);
     gl.uniformMatrix4fv(programInfo.uniformLocations.normalMatrix, false, normalMatrix);
+    gl.uniform1f(programInfo.uniformLocations.pulseStrength, pulseStrength);
     const vertexCount = buffers.vertexCount;
     const type = gl.UNSIGNED_INT;
     const offset = 0;
