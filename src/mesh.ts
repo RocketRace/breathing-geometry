@@ -72,8 +72,8 @@ const rawIcosahedronFaces = [
     [10, 8, 4] as const,
 ];
 
-// I calculated out these indices on paper!
-const rawGreatIcosahedronFaces = [
+// I calculated out these both on paper!
+const rawSmallStellatedDodecahedronFaces = [
     [2, 8, 0, 3, 7] as const,
     [3, 0, 5, 1, 9] as const,
     [1, 6, 2, 7, 9] as const,
@@ -86,6 +86,27 @@ const rawGreatIcosahedronFaces = [
     [10, 5, 8, 11, 3] as const,
     [4, 6, 5, 10, 9] as const,
     [11, 8, 6, 4, 7] as const,
+];
+const rawGreatIcosahedronFaces = [
+    [8, 0, 5] as const,
+    [4, 7, 2] as const,
+    [3, 10, 0] as const,
+    [8, 6, 2] as const,
+    [5, 1, 6] as const,
+    [3, 7, 9] as const,
+    [4, 1, 9] as const,
+    [3, 0, 11] as const,
+    [2, 7, 11] as const,
+    [9, 1, 10] as const,
+    [1, 4, 6] as const,
+    [1, 5, 10] as const,
+    [8, 2, 11] as const,
+    [2, 6, 4] as const,
+    [5, 0, 10] as const,
+    [0, 8, 11] as const,
+    [3, 11, 7] as const,
+    [9, 7, 4] as const,
+    [3, 9, 10] as const,
 ];
 
 type Vertex = readonly [number, number, number, boolean];
@@ -548,7 +569,7 @@ const octahedron = bothDualMeshes(rawCubeVertices.map(x => [...x, true]), rawCub
 const dodecahedron = bothDualMeshes(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces);
 const icosahedron = bothMeshes(rawIcosahedronVertices.map(x => [...x, true]), rawIcosahedronFaces);
 // and the special
-const greatIcosahedron = bothMeshes(rawIcosahedronVertices.map(x => [...x, true]), rawGreatIcosahedronFaces);
+const greatDodecahedron = bothDualMeshes(rawIcosahedronVertices.map(x => [...x, true]), rawSmallStellatedDodecahedronFaces);
 
 export const meshes: Record<string, Record<"true" | "false", Mesh>> = {
     tetrahedron: tetrahedron,
@@ -556,5 +577,5 @@ export const meshes: Record<string, Record<"true" | "false", Mesh>> = {
     octahedron: octahedron,
     dodecahedron: dodecahedron,
     icosahedron: icosahedron,
-    greatIcosahedron: greatIcosahedron
+    greatDodecahedron: greatDodecahedron
 };
