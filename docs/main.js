@@ -50,24 +50,35 @@ const programInfo = {
         normalMatrix: gl.getUniformLocation(program, "uNormalMatrix"),
     },
 };
-const selectMesh = (shape) => {
-    mesh = meshes[shape];
+const selectMesh = (shape, visible) => {
+    meshName = shape ?? meshName;
+    domainVisible = visible ?? domainVisible;
+    mesh = meshes[meshName];
     buffers = initBuffers(gl, mesh);
     return [mesh, buffers];
 };
 const shape = document.querySelector("#shape") ?? panic("ui broken");
 shape.addEventListener("change", event => {
     if (event.target instanceof HTMLInputElement) {
-        selectMesh(event.target.value);
+        if (event.target.type == "radio") {
+            selectMesh(event.target.value, null);
+        }
+        else {
+            selectMesh(null, event.target.checked);
+        }
     }
 });
+let meshName;
+let domainVisible;
 let mesh;
 let buffers;
 [mesh, buffers] = selectMesh(
 // The browser can persist selections
 document.querySelector('input[name="shape"]:checked')
     ?.value
-    ?? "tetrahedron");
+    ?? "tetrahedron", document.querySelector('input[name="domain"]')
+    ?.checked
+    ?? false);
 // Breathing parameters
 const paused = false;
 const secondsPerCycle = 16;

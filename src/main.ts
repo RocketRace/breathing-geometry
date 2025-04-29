@@ -61,8 +61,10 @@ const programInfo = {
     },
 };
 
-const selectMesh = (shape: string): [Mesh, any] => {
-    mesh = meshes[shape];
+const selectMesh = (shape: string | null, visible: boolean | null): [Mesh, any] => {
+    meshName = shape ?? meshName;
+    domainVisible = visible ?? domainVisible;
+    mesh = meshes[meshName];
     buffers = initBuffers(gl, mesh);
     return [mesh, buffers];
 }
@@ -70,18 +72,28 @@ const selectMesh = (shape: string): [Mesh, any] => {
 const shape: HTMLFieldSetElement = document.querySelector("#shape") ?? panic("ui broken");
 shape.addEventListener("change", event => {
     if (event.target instanceof HTMLInputElement) {
-        selectMesh(event.target.value);
+        if (event.target.type == "radio") {
+            selectMesh(event.target.value, null);
+        }
+        else {
+            selectMesh(null, event.target.checked);
+        }
     }
 })
 
-
+let meshName: string;
+let domainVisible: boolean;
 let mesh: Mesh;
 let buffers: any;
 [mesh, buffers] = selectMesh(
     // The browser can persist selections
     document.querySelector<HTMLInputElement>('input[name="shape"]:checked')
         ?.value
-    ?? "tetrahedron"
+    ?? "tetrahedron",
+    document.querySelector<HTMLInputElement>('input[name="domain"]')
+        ?.checked
+    ?? false,
+
 );
 
 // Breathing parameters

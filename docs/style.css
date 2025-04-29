@@ -102,3 +102,7 @@ fieldset {
     border-radius: 5px;
     border-color: #85AF69;
 }
+
+#rightward {
+    float: right;
+}
