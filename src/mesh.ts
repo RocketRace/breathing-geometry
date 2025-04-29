@@ -514,6 +514,17 @@ const dualMesh = (originalVertices: Vertex[], originalFaces: Face[], withFundame
     return new Mesh(vertices, sortedFaces, withFundamentalDomain);
 }
 
+const bothMeshes = (vertices: Vertex[], faces: Face[]): Record<"true" | "false", Mesh> => ({
+    // string booleans? suspect
+    "true": new Mesh(vertices, faces, true),
+    "false": new Mesh(vertices, faces, false),
+})
+
+const bothDualMeshes = (vertices: Vertex[], faces: Face[]): Record<"true" | "false", Mesh> => ({
+    "true": dualMesh(vertices, faces, true),
+    "false": dualMesh(vertices, faces, false),
+})
+
 const tetrahedron = new Mesh(rawTetrahedronVertices.map(x => [...x, true]), rawTetrahedronFaces, false);
 const cube = new Mesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces, false);
 const octahedron = dualMesh(rawCubeVertices.map(x => [...x, true]), rawCubeFaces, false);
