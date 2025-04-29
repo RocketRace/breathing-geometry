@@ -195,7 +195,7 @@ export class Mesh {
         const extraNormals = [];
         const extraTriangles = [];
         const extraOffset = this.baseVertices.length / 3;
-        const veinFactor = 0.2;
+        const veinFactor = 0.25;
         for (let i = 0; i < this.triangles.length; i += 3) {
             const j = i + 1;
             const k = i + 2;
