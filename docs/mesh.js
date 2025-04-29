@@ -195,140 +195,142 @@ export class Mesh {
         const extraNormals = [];
         const extraTriangles = [];
         const extraOffset = this.baseVertices.length / 3;
-        const veinFactor = 0.25;
-        for (let i = 0; i < this.triangles.length; i += 3) {
-            const j = i + 1;
-            const k = i + 2;
-            const ti = this.triangles[i];
-            const tj = this.triangles[j];
-            const tk = this.triangles[k];
-            // 3 rotations
-            const options = [[ti, tj, tk], [tj, tk, ti], [tk, ti, tj]];
-            for (let oi = 0; oi < options.length; oi++) {
-                const [ia, ib, ic] = options[oi];
-                const ax = this.baseVertices[3 * ia];
-                const ay = this.baseVertices[3 * ia + 1];
-                const az = this.baseVertices[3 * ia + 2];
-                const af = this.fundamentalDomain[ia];
-                const a = [ax, ay, az, af];
-                const bx = this.baseVertices[3 * ib];
-                const by = this.baseVertices[3 * ib + 1];
-                const bz = this.baseVertices[3 * ib + 2];
-                const bf = this.fundamentalDomain[ib];
-                const b = [bx, by, bz, bf];
-                const cx = this.baseVertices[3 * ic];
-                const cy = this.baseVertices[3 * ic + 1];
-                const cz = this.baseVertices[3 * ic + 2];
-                const cf = this.fundamentalDomain[ic];
-                const c = [cx, cy, cz, cf];
-                const eab = this.fundamentalEdges.has(edgeKey(a, b));
-                const eac = this.fundamentalEdges.has(edgeKey(a, c));
-                const ebc = this.fundamentalEdges.has(edgeKey(b, c));
-                const addTriangle = ([ax, ay, az, af], [bx, by, bz, bf], [cx, cy, cz, cf]) => {
-                    const newIndex = extraOffset + extraFlatVertices.length / 3;
-                    extraFlatVertices.push(ax, ay, az);
-                    extraNormals.push(1, 0, 0);
-                    extraFundamentalDomain.push(af);
-                    extraFlatVertices.push(bx, by, bz);
-                    extraNormals.push(1, 0, 0);
-                    extraFundamentalDomain.push(bf);
-                    extraFlatVertices.push(cx, cy, cz);
-                    extraNormals.push(1, 0, 0);
-                    extraFundamentalDomain.push(cf);
-                    extraTriangles.push(newIndex, newIndex + 1, newIndex + 2);
-                };
-                // The cases we care about (up to permutation):
-                // a) fundamental edge a<->b, nothing for c
-                // (type 1 edges)
-                if (eab && !eac && !ebc) {
-                    const [nax, nay, naz, naf] = vLerp(a, c, veinFactor);
-                    const [nbx, nby, nbz, nbf] = vLerp(b, c, veinFactor);
-                    const [abx, aby, abz, abf] = halve(a, b);
-                    // shrink
-                    this.baseVertices[3 * ia] = nax;
-                    this.baseVertices[3 * ia + 1] = nay;
-                    this.baseVertices[3 * ia + 2] = naz;
-                    this.baseVertices[3 * ib] = nbx;
-                    this.baseVertices[3 * ib + 1] = nby;
-                    this.baseVertices[3 * ib + 2] = nbz;
-                    // new
-                    addTriangle([ax, ay, az, true], [abx, aby, abz, true], [nax, nay, naz, false]);
-                    addTriangle([abx, aby, abz, true], [bx, by, bz, true], [nbx, nby, nbz, false]);
-                    addTriangle([nax, nay, naz, false], [abx, aby, abz, true], [nbx, nby, nbz, false]);
+        if (withFundamentalDomain) {
+            const veinFactor = 0.25;
+            for (let i = 0; i < this.triangles.length; i += 3) {
+                const j = i + 1;
+                const k = i + 2;
+                const ti = this.triangles[i];
+                const tj = this.triangles[j];
+                const tk = this.triangles[k];
+                // 3 rotations
+                const options = [[ti, tj, tk], [tj, tk, ti], [tk, ti, tj]];
+                for (let oi = 0; oi < options.length; oi++) {
+                    const [ia, ib, ic] = options[oi];
+                    const ax = this.baseVertices[3 * ia];
+                    const ay = this.baseVertices[3 * ia + 1];
+                    const az = this.baseVertices[3 * ia + 2];
+                    const af = this.fundamentalDomain[ia];
+                    const a = [ax, ay, az, af];
+                    const bx = this.baseVertices[3 * ib];
+                    const by = this.baseVertices[3 * ib + 1];
+                    const bz = this.baseVertices[3 * ib + 2];
+                    const bf = this.fundamentalDomain[ib];
+                    const b = [bx, by, bz, bf];
+                    const cx = this.baseVertices[3 * ic];
+                    const cy = this.baseVertices[3 * ic + 1];
+                    const cz = this.baseVertices[3 * ic + 2];
+                    const cf = this.fundamentalDomain[ic];
+                    const c = [cx, cy, cz, cf];
+                    const eab = this.fundamentalEdges.has(edgeKey(a, b));
+                    const eac = this.fundamentalEdges.has(edgeKey(a, c));
+                    const ebc = this.fundamentalEdges.has(edgeKey(b, c));
+                    const addTriangle = ([ax, ay, az, af], [bx, by, bz, bf], [cx, cy, cz, cf]) => {
+                        const newIndex = extraOffset + extraFlatVertices.length / 3;
+                        extraFlatVertices.push(ax, ay, az);
+                        extraNormals.push(1, 0, 0);
+                        extraFundamentalDomain.push(af);
+                        extraFlatVertices.push(bx, by, bz);
+                        extraNormals.push(1, 0, 0);
+                        extraFundamentalDomain.push(bf);
+                        extraFlatVertices.push(cx, cy, cz);
+                        extraNormals.push(1, 0, 0);
+                        extraFundamentalDomain.push(cf);
+                        extraTriangles.push(newIndex, newIndex + 1, newIndex + 2);
+                    };
+                    // The cases we care about (up to permutation):
+                    // a) fundamental edge a<->b, nothing for c
+                    // (type 1 edges)
+                    if (eab && !eac && !ebc) {
+                        const [nax, nay, naz, naf] = vLerp(a, c, veinFactor);
+                        const [nbx, nby, nbz, nbf] = vLerp(b, c, veinFactor);
+                        const [abx, aby, abz, abf] = halve(a, b);
+                        // shrink
+                        this.baseVertices[3 * ia] = nax;
+                        this.baseVertices[3 * ia + 1] = nay;
+                        this.baseVertices[3 * ia + 2] = naz;
+                        this.baseVertices[3 * ib] = nbx;
+                        this.baseVertices[3 * ib + 1] = nby;
+                        this.baseVertices[3 * ib + 2] = nbz;
+                        // new
+                        addTriangle([ax, ay, az, true], [abx, aby, abz, true], [nax, nay, naz, false]);
+                        addTriangle([abx, aby, abz, true], [bx, by, bz, true], [nbx, nby, nbz, false]);
+                        addTriangle([nax, nay, naz, false], [abx, aby, abz, true], [nbx, nby, nbz, false]);
+                    }
+                    // b) fundamental edges for both a<->c and b<->c, but not b<->c
+                    // (corners)
+                    else if (eac && ebc && !eab) {
+                        const [nax, nay, naz, naf] = vLerp(a, b, veinFactor); // these go inwards now
+                        const [nbx, nby, nbz, nbf] = vLerp(b, a, veinFactor);
+                        const ca = vLerp(c, a, veinFactor);
+                        const cb = vLerp(c, b, veinFactor);
+                        const [ncx, ncy, ncz, ncf] = vLerp(ca, b, veinFactor); // doublerp
+                        const caa = halve(ca, a);
+                        const cbb = halve(cb, b);
+                        // shrink
+                        this.baseVertices[3 * ia] = nax;
+                        this.baseVertices[3 * ia + 1] = nay;
+                        this.baseVertices[3 * ia + 2] = naz;
+                        this.baseVertices[3 * ib] = nbx;
+                        this.baseVertices[3 * ib + 1] = nby;
+                        this.baseVertices[3 * ib + 2] = nbz;
+                        this.baseVertices[3 * ic] = ncx;
+                        this.baseVertices[3 * ic + 1] = ncy;
+                        this.baseVertices[3 * ic + 2] = ncz;
+                        // new
+                        addTriangle(c, caa, [ncx, ncy, ncz, false]);
+                        addTriangle(c, cbb, [ncx, ncy, ncz, false]);
+                        addTriangle(a, caa, [nax, nay, naz, false]);
+                        addTriangle(b, cbb, [nbx, nby, nbz, false]);
+                        addTriangle([ncx, ncy, ncz, false], caa, [nax, nay, naz, false]);
+                        addTriangle([ncx, ncy, ncz, false], cbb, [nbx, nby, nbz, false]);
+                    }
+                    // c) no fundamental edges within a,b,c and only c is part of a fundamental edge
+                    // (type 2 edges)
+                    else if (!eab && !eac && !ebc && cf && !af && !bf) {
+                        const [nax, nay, naz, naf] = vLerp(c, a, veinFactor);
+                        const [nbx, nby, nbz, nbf] = vLerp(c, b, veinFactor);
+                        const [abx, aby, abz, abf] = halve(a, b);
+                        // shrink
+                        this.baseVertices[3 * ib] = abx;
+                        this.baseVertices[3 * ib + 1] = aby;
+                        this.baseVertices[3 * ib + 2] = abz;
+                        this.baseVertices[3 * ic] = nax;
+                        this.baseVertices[3 * ic + 1] = nay;
+                        this.baseVertices[3 * ic + 2] = naz;
+                        // new
+                        addTriangle(c, [nax, nay, naz, false], [nbx, nby, nbz, false]);
+                        addTriangle([nax, nay, naz, false], [abx, aby, abz, false], [nbx, nby, nbz, false]);
+                        addTriangle([abx, aby, abz, false], b, [nbx, nby, nbz, false]);
+                    }
+                    // d) no fundamental edges with a,b,c and only a and c are part of a fundamental edge
+                    // (type 3 edges)
+                    else if (!eab && !eac && !ebc && !cf && af && bf) {
+                        const [abx, aby, abz, abf] = vLerp(a, b, veinFactor);
+                        const [bax, bay, baz, baf] = vLerp(b, a, veinFactor);
+                        const ac = vLerp(a, c, veinFactor);
+                        const bc = vLerp(b, c, veinFactor);
+                        const m = halve(ac, bc);
+                        // shrink
+                        this.baseVertices[3 * ia] = ac[0];
+                        this.baseVertices[3 * ia + 1] = ac[1];
+                        this.baseVertices[3 * ia + 2] = ac[2];
+                        this.baseVertices[3 * ib] = bc[0];
+                        this.baseVertices[3 * ib + 1] = bc[1];
+                        this.baseVertices[3 * ib + 2] = bc[2];
+                        // new
+                        addTriangle(a, [abx, aby, abz, false], ac);
+                        addTriangle(b, bc, [bax, bay, baz, false]);
+                        addTriangle([abx, aby, abz, false], [bax, bay, baz, false], m);
+                        addTriangle([abx, aby, abz, false], m, ac);
+                        addTriangle([bax, bay, baz, false], bc, m);
+                    }
+                    // There is a 5th and 6th case (all 3 fundamental edges, or otherwise all 3 corners
+                    // in a fundamental edge) but that won't happen with positive subdivision depth
+                    // And of of course there is the trivial case I don't have to do anything about (nothing)
                 }
-                // b) fundamental edges for both a<->c and b<->c, but not b<->c
-                // (corners)
-                else if (eac && ebc && !eab) {
-                    const [nax, nay, naz, naf] = vLerp(a, b, veinFactor); // these go inwards now
-                    const [nbx, nby, nbz, nbf] = vLerp(b, a, veinFactor);
-                    const ca = vLerp(c, a, veinFactor);
-                    const cb = vLerp(c, b, veinFactor);
-                    const [ncx, ncy, ncz, ncf] = vLerp(ca, b, veinFactor); // doublerp
-                    const caa = halve(ca, a);
-                    const cbb = halve(cb, b);
-                    // shrink
-                    this.baseVertices[3 * ia] = nax;
-                    this.baseVertices[3 * ia + 1] = nay;
-                    this.baseVertices[3 * ia + 2] = naz;
-                    this.baseVertices[3 * ib] = nbx;
-                    this.baseVertices[3 * ib + 1] = nby;
-                    this.baseVertices[3 * ib + 2] = nbz;
-                    this.baseVertices[3 * ic] = ncx;
-                    this.baseVertices[3 * ic + 1] = ncy;
-                    this.baseVertices[3 * ic + 2] = ncz;
-                    // new
-                    addTriangle(c, caa, [ncx, ncy, ncz, false]);
-                    addTriangle(c, cbb, [ncx, ncy, ncz, false]);
-                    addTriangle(a, caa, [nax, nay, naz, false]);
-                    addTriangle(b, cbb, [nbx, nby, nbz, false]);
-                    addTriangle([ncx, ncy, ncz, false], caa, [nax, nay, naz, false]);
-                    addTriangle([ncx, ncy, ncz, false], cbb, [nbx, nby, nbz, false]);
-                }
-                // c) no fundamental edges within a,b,c and only c is part of a fundamental edge
-                // (type 2 edges)
-                else if (!eab && !eac && !ebc && cf && !af && !bf) {
-                    const [nax, nay, naz, naf] = vLerp(c, a, veinFactor);
-                    const [nbx, nby, nbz, nbf] = vLerp(c, b, veinFactor);
-                    const [abx, aby, abz, abf] = halve(a, b);
-                    // shrink
-                    this.baseVertices[3 * ib] = abx;
-                    this.baseVertices[3 * ib + 1] = aby;
-                    this.baseVertices[3 * ib + 2] = abz;
-                    this.baseVertices[3 * ic] = nax;
-                    this.baseVertices[3 * ic + 1] = nay;
-                    this.baseVertices[3 * ic + 2] = naz;
-                    // new
-                    addTriangle(c, [nax, nay, naz, false], [nbx, nby, nbz, false]);
-                    addTriangle([nax, nay, naz, false], [abx, aby, abz, false], [nbx, nby, nbz, false]);
-                    addTriangle([abx, aby, abz, false], b, [nbx, nby, nbz, false]);
-                }
-                // d) no fundamental edges with a,b,c and only a and c are part of a fundamental edge
-                // (type 3 edges)
-                else if (!eab && !eac && !ebc && !cf && af && bf) {
-                    const [abx, aby, abz, abf] = vLerp(a, b, veinFactor);
-                    const [bax, bay, baz, baf] = vLerp(b, a, veinFactor);
-                    const ac = vLerp(a, c, veinFactor);
-                    const bc = vLerp(b, c, veinFactor);
-                    const m = halve(ac, bc);
-                    // shrink
-                    this.baseVertices[3 * ia] = ac[0];
-                    this.baseVertices[3 * ia + 1] = ac[1];
-                    this.baseVertices[3 * ia + 2] = ac[2];
-                    this.baseVertices[3 * ib] = bc[0];
-                    this.baseVertices[3 * ib + 1] = bc[1];
-                    this.baseVertices[3 * ib + 2] = bc[2];
-                    // new
-                    addTriangle(a, [abx, aby, abz, false], ac);
-                    addTriangle(b, bc, [bax, bay, baz, false]);
-                    addTriangle([abx, aby, abz, false], [bax, bay, baz, false], m);
-                    addTriangle([abx, aby, abz, false], m, ac);
-                    addTriangle([bax, bay, baz, false], bc, m);
-                }
-                // There is a 5th and 6th case (all 3 fundamental edges, or otherwise all 3 corners
-                // in a fundamental edge) but that won't happen with positive subdivision depth
-                // And of of course there is the trivial case I don't have to do anything about (nothing)
+                ;
             }
-            ;
         }
         this.vertices = [...this.vertices, ...extraFlatVertices];
         this.baseVertices = [...this.baseVertices, ...extraFlatVertices];
